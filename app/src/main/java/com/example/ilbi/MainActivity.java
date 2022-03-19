@@ -45,12 +45,12 @@ public class MainActivity extends AppCompatActivity {
         //레이아웃
         layoutInit();
 
-        //fall클릭 이벤트
-        layout_fall.setOnClickListener(new View.OnClickListener() {
+        //camera 클릭 이벤트
+        layout_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"fall",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), FallViewActivity.class);
+                Toast.makeText(MainActivity.this,"camera",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
                 startActivity(intent);
             }
         });
@@ -67,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.menu_mypage:
-                Toast.makeText(getApplicationContext(), "마이페이지", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "마이페이지", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), UserViewActivity.class);
+                startActivity(intent);
                 return true;
 
         }

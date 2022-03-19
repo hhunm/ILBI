@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,14 +19,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class FallViewActivity extends AppCompatActivity {
+public class UserViewActivity extends AppCompatActivity {
     Toolbar toolbar;
     RelativeLayout layout_user;
+    RelativeLayout layout_address;
+    LinearLayout layout_record;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fall_layout);
+        setContentView(R.layout.user_layout);
 
         toolbarInit();
         layout_init();
@@ -79,18 +82,51 @@ public class FallViewActivity extends AppCompatActivity {
         ImageView user_image = findViewById(R.id.img_user);
         RelativeLayout.LayoutParams user_img_pr = (RelativeLayout.LayoutParams) user_image.getLayoutParams();
         user_image.setImageResource(R.drawable.senior_image);
-        user_img_pr.width = metrics.widthPixels / 5;
-        user_img_pr.height = metrics.widthPixels / 5;
+        user_img_pr.width = metrics.widthPixels / 6;
+        user_img_pr.height = metrics.widthPixels / 6;
         int margin_inside= metrics.widthPixels / 100 * 2;
         user_img_pr.setMarginEnd(margin_inside);
         user_img_pr.topMargin = metrics.heightPixels / 100 * 2;
 
         //user 타이틀 텍스트 뷰
-        TextView user_title = findViewById(R.id.txt_title_user);
+        TextView user_title = findViewById(R.id.txt_user_title);
         user_title.setText("이름");
 
         //user 내용 텍스트 뷰
-        TextView fall_content = findViewById(R.id.txt_user_content);
-        fall_content.setText("이현민");
+        TextView user_content = findViewById(R.id.txt_user_content);
+        user_content.setText("이현민");
+
+        //address 뷰 패딩 설정
+        layout_address = findViewById(R.id.layout_address);
+        layout_address.setPadding(padding_unitL*2, padding_unitL, padding_unitL*2, padding_unitL);
+
+        //address 타이틀 텍스트 뷰
+        TextView address_title = findViewById(R.id.txt_address_title);
+        RelativeLayout.LayoutParams user_title_pr = (RelativeLayout.LayoutParams) address_title.getLayoutParams();
+        address_title.setText("주소");
+        user_title_pr.setMarginEnd(margin_inside);
+        user_title_pr.topMargin = metrics.heightPixels / 100 * 1;
+
+        //address 내용 텍스트 뷰
+        TextView address_content = findViewById(R.id.txt_address_content);
+        address_content.setText("서울특별시 용산구 abc로 1가 101동 1504호");
+
+        //record 뷰 패딩 설정
+        layout_record = findViewById(R.id.layout_record);
+        layout_record.setPadding(padding_unitL*2, padding_unitL, padding_unitL*2, padding_unitL);
+
+        //address 타이틀 텍스트 뷰
+        TextView record_title = findViewById(R.id.txt_record_title);
+        RelativeLayout.LayoutParams record_title_pr = (RelativeLayout.LayoutParams) address_title.getLayoutParams();
+        record_title.setText("낙상기록");
+        record_title_pr.setMarginEnd(margin_inside);
+        record_title_pr.topMargin = metrics.heightPixels / 100 * 1;
+        record_title_pr.setMarginEnd(margin_inside);
+
+        TextView record1 = findViewById(R.id.txt_record1);
+        record1.setText("낙상기록이 없습니다");
+
+
+
     }
 }

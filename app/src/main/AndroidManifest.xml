@@ -15,7 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FallViewActivity"></activity>
+        <activity android:name=".UserViewActivity"></activity>
+        <activity android:name=".CameraActivity"></activity>
     </application>
 
 </manifest>
