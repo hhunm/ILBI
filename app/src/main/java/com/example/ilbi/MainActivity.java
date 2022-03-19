@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -22,6 +23,13 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
+    RelativeLayout layout_fall;
+    RelativeLayout layout_camera;
+    RelativeLayout layout_call;
+    RelativeLayout layout_cancel;
+    RelativeLayout layout_protector;
+    RelativeLayout layout_setting;
+    RelativeLayout layout_help;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
         //레이아웃
         layoutInit();
 
+        //fall클릭 이벤트
+        layout_fall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,"fall",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), FallViewActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -57,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
     private void toolbarInit(){
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -68,14 +86,15 @@ public class MainActivity extends AppCompatActivity {
         WindowManager windowManager = (WindowManager) getApplicationContext()
                 .getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(metrics);
+        Log.d("main",Integer.toString(metrics.widthPixels));
 
         //메인 패딩 설정
-        View view_main = findViewById(R.id.view_main);
+        View view_main = findViewById(R.id.view_fall);
         int padding_outside= metrics.heightPixels / 100 * 2;
         view_main.setPadding(padding_outside, padding_outside, padding_outside, padding_outside);
 
         //fall 뷰 패딩 설정
-        RelativeLayout layout_fall = findViewById(R.id.layout_fall);
+        layout_fall = findViewById(R.id.layout_fall);
         int padding_unitL=  metrics.widthPixels / 100 * 4;
         layout_fall.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
 
@@ -105,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         fall_switch.setText("OFF");
 
         //camera 뷰 패딩 설정
-        RelativeLayout layout_camera = findViewById(R.id.layout_camera);
+        layout_camera = findViewById(R.id.layout_camera);
         layout_camera.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
 
         //camera 이미지 뷰
@@ -130,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         camera_num.setText("0명");
 
         //call 뷰 패딩 설정
-        RelativeLayout layout_call = findViewById(R.id.layout_call);
+        layout_call = findViewById(R.id.layout_call);
         layout_call.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
 
         //call 이미지 뷰
@@ -151,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         call_content.setText("119에 긴급신고 문자를 보냅니다");
 
         //cancel 뷰 패딩 설정
-        RelativeLayout layout_cancel = findViewById(R.id.layout_cancel);
+        layout_cancel = findViewById(R.id.layout_cancel);
         layout_cancel.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
 
         //cancel 이미지 뷰
@@ -173,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //protector 뷰 패딩 설정
-        RelativeLayout layout_protector = findViewById(R.id.layout_protector);
+        layout_protector = findViewById(R.id.layout_protector);
         layout_protector.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
 
         //protector 이미지 뷰
@@ -198,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         protector_number.setText("");
 
         //setting 뷰 패딩 설정
-        RelativeLayout layout_setting = findViewById(R.id.layout_setting);
+        layout_setting = findViewById(R.id.layout_setting);
         layout_setting.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
         LinearLayout.LayoutParams setting_layout_pr = (LinearLayout.LayoutParams) layout_setting.getLayoutParams();
         setting_layout_pr.width = (metrics.widthPixels/2);
@@ -216,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         setting_title.setText("설정");
 
         //help 뷰 패딩 설정
-        RelativeLayout layout_help = findViewById(R.id.layout_help);
+        layout_help = findViewById(R.id.layout_help);
         layout_help.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
         LinearLayout.LayoutParams help_layout_pr = (LinearLayout.LayoutParams) layout_help.getLayoutParams();
         help_layout_pr.width = (metrics.widthPixels/2);

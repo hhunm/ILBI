@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#8BCD69"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        />
+
+    <LinearLayout
+        android:id="@+id/view_fall"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#DFDFDF"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/layout_user"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/layout_border"
+            android:backgroundTint="#FFFFFF">
+
+            <ImageView
+                android:id="@+id/img_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="#FFFFFF"
+                app:srcCompat="@drawable/senior_image" />
+
+            <TextView
+                android:id="@+id/txt_title_user"
+                style="@style/TITLE_STYLE"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/img_user"
+                android:layout_toRightOf="@id/img_user"
+                android:text="테스트중" />
+
+            <TextView
+                android:id="@+id/txt_user_content"
+                style="@style/CONTENT_STYLE"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_title_user"
+                android:layout_toRightOf="@id/img_user"
+                android:text="TextView" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</LinearLayout>
