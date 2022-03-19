@@ -13,51 +13,90 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         />
 
-    <WebView
+    <LinearLayout
+        android:id="@+id/view_camera"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000000" >
+        android:background="#DFDFDF"
+        android:orientation="vertical">
 
-    </WebView>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
+        <WebView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/phone_call_image" />
+            android:background="#000000">
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+        </WebView>
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-    </RelativeLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <RelativeLayout
+                    android:id="@+id/layout_phonecall"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/layout_border"
+                    android:backgroundTint="#FFFFFF">
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+                    <ImageView
+                        android:id="@+id/img_phonecall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/phone_call_image" />
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/txt_phonecall_title"
+                        style="@style/TITLE_STYLE"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/img_phonecall"
+                        android:layout_toRightOf="@id/img_phonecall"
+                        android:text="TextView" />
+
+                    <TextView
+                        android:id="@+id/txt_phonecall_content"
+                        style="@style/CONTENT_STYLE"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/txt_phonecall_title"
+                        android:layout_toRightOf="@id/img_phonecall"
+                        android:text="TextView" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_guide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/layout_border"
+                    android:backgroundTint="#FFFFFF">
+
+                    <TextView
+                        android:id="@+id/txt_guide_title"
+                        style="@style/TITLE_STYLE"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="TextView" />
+
+                    <TextView
+                        android:id="@+id/txt_guide_content"
+                        style="@style/CONTENT_STYLE"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/txt_guide_title"
+                        android:lineSpacingExtra="2sp"
+                        android:text="TextView" />
+                </RelativeLayout>
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
 
 </LinearLayout>

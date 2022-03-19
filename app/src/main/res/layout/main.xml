@@ -76,7 +76,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/layout_camera"
+                    android:id="@+id/view_camera"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_marginBottom="8dp"

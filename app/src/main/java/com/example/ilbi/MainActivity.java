@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         fall_switch.setText("OFF");
 
         //camera 뷰 패딩 설정
-        layout_camera = findViewById(R.id.layout_camera);
+        layout_camera = findViewById(R.id.view_camera);
         layout_camera.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
 
         //camera 이미지 뷰
