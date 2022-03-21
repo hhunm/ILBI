@@ -20,13 +20,6 @@
         android:background="#DFDFDF"
         android:orientation="vertical">
 
-        <WebView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#000000">
-
-        </WebView>
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">

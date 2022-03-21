@@ -3,10 +3,16 @@ package com.example.ilbi;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
@@ -45,6 +51,22 @@ public class MainActivity extends AppCompatActivity {
         //레이아웃
         layoutInit();
 
+        //sms 권한 확인
+        int permissionCheck = ContextCompat.checkSelfPermission(
+                this, Manifest.permission.SEND_SMS);
+
+        if(permissionCheck == PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(getApplicationContext(),"SMS수신 권한 있음",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getApplicationContext(),"SMS수신 권한 없음",Toast.LENGTH_SHORT).show();
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                requestPermissions(
+                        new String[]{Manifest.permission.SEND_SMS}, 1000);
+            }
+
+
+        }
+
         //camera 클릭 이벤트
         layout_camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +76,28 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        layout_call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    SmsManager smsManager = SmsManager.getDefault();
+                    if(smsManager == null){
+                        return;
+                    }
+                    smsManager.sendTextMessage("5556",null,"긴급신고",null,null);
+
+                }catch(Exception e){
+                    //Toast.makeText(MainActivity.this,"call failed",Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
