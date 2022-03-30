@@ -1,6 +1,7 @@
 package com.example.ilbi;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -8,6 +9,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -77,21 +79,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        //긴급호출
         layout_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
-                    SmsManager smsManager = SmsManager.getDefault();
-                    if(smsManager == null){
-                        return;
-                    }
-                    smsManager.sendTextMessage("5556",null,"긴급신고",null,null);
+                //다이얼로그
+                AlertDialog.Builder callDialog = new AlertDialog.Builder(MainActivity.this);
 
-                }catch(Exception e){
-                    //Toast.makeText(MainActivity.this,"call failed",Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
+                callDialog.setMessage("119에 신고하시겠습니까?")
+                        .setTitle("119 신고")
+                        .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(MainActivity.this,"예",Toast.LENGTH_SHORT).show();
+                        try{
+                            SmsManager smsManager = SmsManager.getDefault();
+                            if(smsManager == null){
+                                return;
+                            }
+                            smsManager.sendTextMessage("5556",null,"긴급신고",null,null);
+                            Toast.makeText(MainActivity.this,"전송에 성공했습니다.",Toast.LENGTH_SHORT).show();
+                        }catch(Exception e){
+                            Toast.makeText(MainActivity.this,"전송에 실패하였습니다.",Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    }
+                }).setNeutralButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(MainActivity.this,"아니오",Toast.LENGTH_SHORT).show();
+                    }
+                }).show();
 
             }
         });
