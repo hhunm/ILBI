@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
@@ -79,6 +78,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //protector 클릭 이벤트
+        layout_protector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,"protector",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), ProtectorActivity.class);
+                startActivity(intent);
+            }
+        });
         //긴급호출
         layout_call.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
         //protector 이미지 뷰
         ImageView protector_image = findViewById(R.id.img_protector);
         RelativeLayout.LayoutParams protector_img_pr = (RelativeLayout.LayoutParams) protector_image.getLayoutParams();
-        protector_image.setImageResource(R.drawable.protector_image);
+        protector_image.setImageResource(R.drawable.protector_icon_image);
         protector_img_pr.width = metrics.widthPixels / 7;
         protector_img_pr.height = metrics.widthPixels / 7;
         protector_img_pr.setMarginEnd(margin_inside);

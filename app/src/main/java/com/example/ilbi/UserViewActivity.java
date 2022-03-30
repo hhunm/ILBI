@@ -93,7 +93,7 @@ public class UserViewActivity extends AppCompatActivity {
         user_title.setText("이름");
 
         //user 내용 텍스트 뷰
-        TextView user_content = findViewById(R.id.txt_user_content);
+        TextView user_content = findViewById(R.id.txt_user_name);
         user_content.setText("이현민");
 
         //address 뷰 패딩 설정
