@@ -13,15 +13,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ILBI">
-        <activity android:name=".MainActivity">
+        <activity android:name=".StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".StartGeneralActivity"></activity>
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".UserViewActivity"></activity>
         <activity android:name=".CameraActivity"></activity>
         <activity android:name=".ProtectorActivity"></activity>
+
     </application>
 
 </manifest>

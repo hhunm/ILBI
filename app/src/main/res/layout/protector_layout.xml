@@ -14,7 +14,7 @@
         />
 
     <LinearLayout
-        android:id="@+id/view_fall"
+        android:id="@+id/view_protector"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#DFDFDF"

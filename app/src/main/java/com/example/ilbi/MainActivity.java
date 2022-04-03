@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
                         new String[]{Manifest.permission.SEND_SMS}, 1000);
             }
 
-
         }
 
         //camera 클릭 이벤트
@@ -160,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("main",Integer.toString(metrics.widthPixels));
 
         //메인 패딩 설정
-        View view_main = findViewById(R.id.view_fall);
+        View view_main = findViewById(R.id.view_main);
         int padding_outside= metrics.heightPixels / 100 * 2;
         view_main.setPadding(padding_outside, padding_outside, padding_outside, padding_outside);
 

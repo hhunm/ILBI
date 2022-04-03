@@ -15,7 +15,7 @@
         />
 
     <LinearLayout
-        android:id="@+id/view_fall"
+        android:id="@+id/view_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#DFDFDF"
@@ -50,6 +50,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@id/img_fall"
                         android:layout_toRightOf="@id/img_fall"
+                        android:layout_marginBottom="2dp"
                         style = "@style/TITLE_STYLE"
                         />
 
@@ -226,7 +227,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@id/img_protector"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginBottom="2dp"
                         android:layout_toRightOf="@id/img_protector"
                         android:fontFamily="@font/nanumsquare_acb"
                         android:text="TextView"
@@ -238,7 +239,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/txt_protector_title"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="2dp"
                         android:layout_toRightOf="@id/img_protector"
                         android:fontFamily="@font/nanumsquare_acl"
                         android:text="TextView"
@@ -267,7 +268,7 @@
                     <RelativeLayout
                         android:id="@+id/layout_setting"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="110dp"
                         android:layout_marginEnd="4dp"
                         android:layout_marginBottom="8dp"
                         android:layout_weight="1"
@@ -295,7 +296,7 @@
                     <RelativeLayout
                         android:id="@+id/layout_help"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="110dp"
                         android:layout_marginStart="4dp"
                         android:layout_marginBottom="8dp"
                         android:layout_weight="1"

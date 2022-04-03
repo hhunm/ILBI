@@ -77,7 +77,7 @@ public class ProtectorActivity extends AppCompatActivity {
         Log.d("fall",Integer.toString(metrics.widthPixels));
 
         //메인 패딩 설정
-        View view_main = findViewById(R.id.view_fall);
+        View view_main = findViewById(R.id.view_protector);
         int padding_outside= metrics.heightPixels / 100 * 2;
         view_main.setPadding(padding_outside, padding_outside, padding_outside, padding_outside);
 
