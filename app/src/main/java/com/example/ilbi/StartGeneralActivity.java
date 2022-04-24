@@ -1,8 +1,11 @@
 package com.example.ilbi;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +25,11 @@ import androidx.appcompat.widget.Toolbar;
 public class StartGeneralActivity extends AppCompatActivity {
     Toolbar toolbar;
     Button next_btn;
+    EditText edit_name;
+    EditText edit_number;
+    RadioButton rb_senior;
+    RadioButton rb_protector;
+    private final String TAG = "StartGeneralActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,6 +38,59 @@ public class StartGeneralActivity extends AppCompatActivity {
 
         toolbarInit();
         layout_init();
+
+        edit_name = findViewById(R.id.edit_name_gn);
+        edit_number = findViewById(R.id.edit_number_gn);
+        rb_senior = findViewById(R.id.rbtn_senior);
+        rb_protector = findViewById(R.id.rbtn_protector);
+        SharedPreferences preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+
+        next_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = edit_name.getText().toString();
+                String number = edit_number.getText().toString();
+                String role = null;
+                SharedPreferences.Editor editor = preferences.edit();
+                Intent intent;
+
+                if(name.length() == 0 || number.length() == 0){
+                    Toast.makeText(StartGeneralActivity.this,"입력하지 않은 부분이 있습니다.",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(rb_senior.isChecked()){
+                    role = "Senior";
+                    editor.putString("senior_name", name);
+                    editor.putString("senior_number", number);
+                    editor.putString("role", role);
+                    intent = new Intent(StartGeneralActivity.this, StartSeniorActivity.class);
+
+                }else if(rb_protector.isChecked()){
+                    role = "Protector";
+                    editor.putString("protector_name", name);
+                    editor.putString("protector_number", number);
+                    editor.putString("role", role);
+                    intent = new Intent(StartGeneralActivity.this, StartProtectorActivity.class);
+
+                }else{
+                    Toast.makeText(StartGeneralActivity.this,"역할을 선택해주세요",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                editor.commit();
+
+                Log.d(TAG, "senior_name: " + preferences.getString("senior_name",""));
+                Log.d(TAG, "senior_number: " + preferences.getString("senior_number",""));
+                Log.d(TAG, "protector_name: " + preferences.getString("protector_name",""));
+                Log.d(TAG, "protector_number: " + preferences.getString("protector_number",""));
+
+
+                startActivity(intent);
+
+            }
+        });
 
     }
 

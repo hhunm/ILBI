@@ -1,6 +1,8 @@
 package com.example.ilbi;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
@@ -11,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,9 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class CameraActivity extends AppCompatActivity {
-    Toolbar toolbar;
-    RelativeLayout layout_phonecall;
-    RelativeLayout layout_guide;
+    private Toolbar toolbar;
+    private RelativeLayout layout_phonecall;
+    private RelativeLayout layout_guide;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,6 +32,16 @@ public class CameraActivity extends AppCompatActivity {
 
         toolbarInit();
         layout_init();
+
+        //전화 걸기
+        layout_phonecall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(CameraActivity.this,"전화걸기",Toast.LENGTH_SHORT).show();
+                Intent it = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "5556"));
+                startActivity(it);
+            }
+        });
     }
 
     private void toolbarInit(){

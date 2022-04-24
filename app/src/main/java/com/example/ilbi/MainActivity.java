@@ -4,13 +4,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -28,19 +34,33 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
 public class MainActivity extends AppCompatActivity {
-    Toolbar toolbar;
-    RelativeLayout layout_fall;
-    RelativeLayout layout_camera;
-    RelativeLayout layout_call;
-    RelativeLayout layout_cancel;
-    RelativeLayout layout_protector;
-    RelativeLayout layout_setting;
-    RelativeLayout layout_help;
+    private Toolbar toolbar;
+    private RelativeLayout layout_fall;
+    private RelativeLayout layout_camera;
+    private RelativeLayout layout_call;
+    private RelativeLayout layout_cancel;
+    private RelativeLayout layout_protector;
+    private RelativeLayout layout_setting;
+    private RelativeLayout layout_help;
+    private final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.main);
 
 //        //액션바 없애기
@@ -66,6 +86,20 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+
+        //fcm
+        FirebaseMessaging.getInstance().subscribeToTopic("fall").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(getApplicationContext(),"구독 성공",Toast.LENGTH_SHORT).show();
+                    //구독성공뜸
+                }else{
+                    Toast.makeText(getApplicationContext(),"구독 실패",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
         //camera 클릭 이벤트
         layout_camera.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +138,13 @@ public class MainActivity extends AppCompatActivity {
                             if(smsManager == null){
                                 return;
                             }
-                            smsManager.sendTextMessage("5556",null,"긴급신고",null,null);
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월 dd일 hh시 mm분", Locale.KOREAN);
+                            TimeZone tz = TimeZone.getTimeZone("Asia/Seoul");
+                            format.setTimeZone(tz);
+                            Date current_time = new Date();
+                            Log.d(TAG, format.format(current_time));
+                            String msg = format.format(current_time)+" Adress에서 낙상 사고를 감지했습니다. ";
+                            smsManager.sendTextMessage("5556",null,msg,null,null);
                             Toast.makeText(MainActivity.this,"전송에 성공했습니다.",Toast.LENGTH_SHORT).show();
                         }catch(Exception e){
                             Toast.makeText(MainActivity.this,"전송에 실패하였습니다.",Toast.LENGTH_SHORT).show();
@@ -143,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
 
     private void toolbarInit(){
         toolbar = findViewById(R.id.toolbar);
@@ -286,29 +325,11 @@ public class MainActivity extends AppCompatActivity {
         TextView protector_number = findViewById(R.id.txt_protector_number);
         protector_number.setText("");
 
-        //setting 뷰 패딩 설정
-        layout_setting = findViewById(R.id.layout_setting);
-        layout_setting.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
-        LinearLayout.LayoutParams setting_layout_pr = (LinearLayout.LayoutParams) layout_setting.getLayoutParams();
-        setting_layout_pr.width = (metrics.widthPixels/2);
-
-        //setting 이미지 뷰
-        ImageView setting_image = findViewById(R.id.img_setting);
-        RelativeLayout.LayoutParams setting_img_pr = (RelativeLayout.LayoutParams) setting_image.getLayoutParams();
-        setting_image.setImageResource(R.drawable.setting_image);
-        setting_img_pr.width = metrics.widthPixels / 7;
-        setting_img_pr.height = metrics.widthPixels / 7;
-        setting_img_pr.setMarginEnd(margin_inside);
-
-        //setting 타이틀 텍스트 뷰
-        TextView setting_title = findViewById(R.id.txt_setting_title);
-        setting_title.setText("설정");
 
         //help 뷰 패딩 설정
         layout_help = findViewById(R.id.layout_help);
         layout_help.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
         LinearLayout.LayoutParams help_layout_pr = (LinearLayout.LayoutParams) layout_help.getLayoutParams();
-        help_layout_pr.width = (metrics.widthPixels/2);
 
         //help 이미지 뷰
         ImageView help_image = findViewById(R.id.img_help);

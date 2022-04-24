@@ -21,22 +21,33 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class StartActivity extends AppCompatActivity {
     Button start_btn;
+    private final String TAG = "StartActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //만약 어플 최초 구동이면 startView
-        SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
-        boolean first = pref.getBoolean("isFirst", true);
-        if(first == true){
-            Log.d("Is first Time?", "first");
-            setContentView(R.layout.start_layout);
-            layout_init();
+        setContentView(R.layout.start_layout);
+        layout_init();
 
-            //최초 구동이 아닌 것으로
-            //SharedPreferences.Editor editor = pref.edit();
-//            editor.putBoolean("isFirst", false);
-//            editor.commit();
+        //만약 어플 최초 구동이면 startView
+        SharedPreferences pref = getSharedPreferences("UserInfo", MODE_PRIVATE);
+
+//        SharedPreferences.Editor editor = pref.edit();
+//        editor.putBoolean("isFirst", true);
+//        editor.commit();
+
+        boolean first = pref.getBoolean("isFirst", true);
+
+       Log.d(TAG, "first: "+ first);
+
+        if(first){
+            Log.d(TAG, "first");
+        }
+        else{
+            Log.d(TAG, "not first");
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
 
         //버튼 클릭
