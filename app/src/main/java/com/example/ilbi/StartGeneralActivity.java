@@ -23,12 +23,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class StartGeneralActivity extends AppCompatActivity {
-    Toolbar toolbar;
-    Button next_btn;
-    EditText edit_name;
-    EditText edit_number;
-    RadioButton rb_senior;
-    RadioButton rb_protector;
+    private Toolbar toolbar;
+    private Button next_btn;
+    private EditText edit_name;
+    private EditText edit_number;
+    private RadioButton rb_senior;
+    private RadioButton rb_protector;
     private final String TAG = "StartGeneralActivity";
 
     @Override

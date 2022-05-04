@@ -2,6 +2,7 @@ package com.example.ilbi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -24,7 +25,7 @@ public class CameraActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RelativeLayout layout_phonecall;
     private RelativeLayout layout_guide;
-
+    private SharedPreferences preferences;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,17 @@ public class CameraActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(CameraActivity.this,"전화걸기",Toast.LENGTH_SHORT).show();
-                Intent it = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "5556"));
+                SharedPreferences preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+                String number = preferences.getString("senior_number","abc");
+                int num;
+
+                try{
+                    num = Integer.parseInt(number);
+                }catch(NumberFormatException e){
+                    Toast.makeText(CameraActivity.this,"유효하지 않은 전화번호입니다",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Intent it = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + num));
                 startActivity(it);
             }
         });
@@ -69,6 +80,7 @@ public class CameraActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     protected void layout_init() {
+        preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
         //기기 해상도 정보 가져오기
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) getApplicationContext()
@@ -101,7 +113,7 @@ public class CameraActivity extends AppCompatActivity {
 
        //phonecall 내용 텍스트 뷰
         TextView phonecall_content = findViewById(R.id.txt_phonecall_content);
-        phonecall_content.setText("이소민");
+        phonecall_content.setText(preferences.getString("protector_name","등록된 보호자가 없습니다."));
 
         //guide 뷰 패딩 설정
         layout_guide = findViewById(R.id.layout_guide);

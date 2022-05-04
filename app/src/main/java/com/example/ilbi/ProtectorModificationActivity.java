@@ -12,49 +12,61 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class ProtectorActivity extends AppCompatActivity {
+public class ProtectorModificationActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RelativeLayout layout_protector_info;
     private Button protector_modify;
     private SharedPreferences preferences;
+    private EditText protector_name;
+    private EditText protector_number;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.protector_layout);
+        setContentView(R.layout.protector_modification_layout);
+        preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+
+        protector_number = findViewById(R.id.txt_protector_info_number_modify);
+        protector_name = findViewById(R.id.txt_protector_info_name_modify);
 
         toolbarInit();
         layout_init();
 
-        protector_modify.setOnClickListener(new Button.OnClickListener(){
-
+        protector_modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ProtectorActivity.this,"보호자 정보 수정",Toast.LENGTH_SHORT).show();
-                ProtectorActivity.this.finish();
-                Intent intent = new Intent(getApplicationContext(), ProtectorModificationActivity.class);
-                startActivity(intent);
+                preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                String name = protector_name.getText().toString();
+                String number = protector_number.getText().toString();
 
+                editor.putString("protector_name", name);
+                editor.putString("protector_number", number);
+
+                editor.commit();
+
+                ProtectorModificationActivity.this.finish();
+                Intent intent = new Intent(getApplicationContext(), ProtectorActivity.class);
+                startActivity(intent);
             }
         });
     }
 
     private void toolbarInit(){
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("보호자");
+        toolbar.setTitle("보호자 정보 수정");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
     }
 
@@ -84,39 +96,39 @@ public class ProtectorActivity extends AppCompatActivity {
         windowManager.getDefaultDisplay().getMetrics(metrics);
 
         //메인 패딩 설정
-        View view_main = findViewById(R.id.view_protector);
+        View view_main = findViewById(R.id.view_protector_modify);
         int padding_outside= metrics.heightPixels / 100 * 2;
         view_main.setPadding(padding_outside, padding_outside, padding_outside, padding_outside);
 
         //protector_info 뷰 패딩 설정
-        layout_protector_info = findViewById(R.id.layout_protector_info);
+        layout_protector_info = findViewById(R.id.layout_protector_info_modify);
         int padding_unitL=  metrics.widthPixels / 100 * 4;
         layout_protector_info.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
 
         //protector_info 이미지 뷰
-        ImageView user_image = findViewById(R.id.img_protector_info);
-        RelativeLayout.LayoutParams user_img_pr = (RelativeLayout.LayoutParams) user_image.getLayoutParams();
-        user_image.setImageResource(R.drawable.protector_image);
-        user_img_pr.width = metrics.widthPixels / 5;
-        user_img_pr.height = metrics.widthPixels / 5;
+        ImageView user_image_m = findViewById(R.id.img_protector_info_modify);
+        RelativeLayout.LayoutParams user_img_pr_m = (RelativeLayout.LayoutParams) user_image_m.getLayoutParams();
+        user_image_m.setImageResource(R.drawable.protector_image);
+        user_img_pr_m.width = metrics.widthPixels / 5;
+        user_img_pr_m.height = metrics.widthPixels / 5;
         int margin_inside= metrics.widthPixels / 100 * 2;
-        user_img_pr.setMarginEnd(margin_inside);
-        user_img_pr.topMargin = metrics.heightPixels / 100 * 2;
+        user_img_pr_m.setMarginEnd(margin_inside);
+        user_img_pr_m.topMargin = metrics.heightPixels / 100 * 2;
 
         //protector_info 타이틀 텍스트 뷰
-        TextView protector_title = findViewById(R.id.txt_protector_info_title);
+        TextView protector_title = findViewById(R.id.txt_protector_info_title_modify);
         protector_title.setText("보호자");
 
         //protector_info 이름
-        TextView protector_name = findViewById(R.id.txt_protector_info_name);
+
         protector_name.setText(preferences.getString("protector_name","등록된 보호자가 없습니다"));
 
         //protector_info 번호
-        TextView protector_number = findViewById(R.id.txt_protector_info_number);
+
         protector_number.setText(preferences.getString("protector_number","등록된 보호자가 없습니다"));
 
         //수정 버튼
-        protector_modify = findViewById(R.id.btn_protector_info);
-        protector_modify.setText("보호자 정보 수정");
+        protector_modify = findViewById(R.id.btn_protector_info_modify);
+        protector_modify.setText("수정");
     }
 }

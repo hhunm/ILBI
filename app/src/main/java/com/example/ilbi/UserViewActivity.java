@@ -1,6 +1,7 @@
 package com.example.ilbi;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -24,6 +25,7 @@ public class UserViewActivity extends AppCompatActivity {
     RelativeLayout layout_user;
     RelativeLayout layout_address;
     LinearLayout layout_record;
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,11 +35,12 @@ public class UserViewActivity extends AppCompatActivity {
         toolbarInit();
         layout_init();
 
+
     }
 
     private void toolbarInit(){
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("내 정보");
+        toolbar.setTitle("피보호자 정보");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -61,6 +64,7 @@ public class UserViewActivity extends AppCompatActivity {
     }
 
     protected void layout_init(){
+        preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
         //기기 해상도 정보 가져오기
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) getApplicationContext()
@@ -94,7 +98,7 @@ public class UserViewActivity extends AppCompatActivity {
 
         //user 내용 텍스트 뷰
         TextView user_content = findViewById(R.id.txt_user_name);
-        user_content.setText("이현민");
+        user_content.setText(preferences.getString("senior_name","등록된 이름이 없습니다."));
 
         //address 뷰 패딩 설정
         layout_address = findViewById(R.id.layout_address);
@@ -109,7 +113,7 @@ public class UserViewActivity extends AppCompatActivity {
 
         //address 내용 텍스트 뷰
         TextView address_content = findViewById(R.id.txt_address_content);
-        address_content.setText("서울특별시 용산구 abc로 1가 101동 1504호");
+        address_content.setText(preferences.getString("senior_address","등록된 주소가 없습니다."));
 
         //record 뷰 패딩 설정
         layout_record = findViewById(R.id.layout_record);
