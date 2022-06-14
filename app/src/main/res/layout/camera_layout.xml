@@ -20,19 +20,29 @@
         android:background="#DFDFDF"
         android:orientation="vertical">
 
+        <WebView
+            android:id="@+id/wb_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
+
             <LinearLayout
+                android:id="@+id/view_camera_for_protector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical">
+
                 <RelativeLayout
                     android:id="@+id/layout_phonecall"
+                    style="@style/BLOCK_PADDING"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/layout_border"
                     android:backgroundTint="#FFFFFF">
 
@@ -44,7 +54,7 @@
 
                     <TextView
                         android:id="@+id/txt_phonecall_title"
-                        style="@style/TITLE_STYLE"
+                        style="@style/TITLE_STYLE_NORMAL"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@id/img_phonecall"
@@ -53,7 +63,7 @@
 
                     <TextView
                         android:id="@+id/txt_phonecall_content"
-                        style="@style/CONTENT_STYLE"
+                        style="@style/CONTENT_STYLE_NORMAL"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/txt_phonecall_title"
@@ -63,15 +73,15 @@
 
                 <RelativeLayout
                     android:id="@+id/layout_guide"
+                    style="@style/BLOCK_PADDING"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:background="@drawable/layout_border"
                     android:backgroundTint="#FFFFFF">
 
                     <TextView
                         android:id="@+id/txt_guide_title"
-                        style="@style/TITLE_STYLE"
+                        style="@style/TITLE_STYLE_NORMAL"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
@@ -79,7 +89,7 @@
 
                     <TextView
                         android:id="@+id/txt_guide_content"
-                        style="@style/CONTENT_STYLE"
+                        style="@style/CONTENT_STYLE_NORMAL"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/txt_guide_title"
@@ -89,10 +99,6 @@
             </LinearLayout>
 
         </ScrollView>
-
-        <WebView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
     </LinearLayout>
 

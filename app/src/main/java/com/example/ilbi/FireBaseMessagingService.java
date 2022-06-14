@@ -4,10 +4,13 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
@@ -38,10 +41,12 @@ public class FireBaseMessagingService extends com.google.firebase.messaging.Fire
         Log.d(TAG, "body: " +text);
         Log.d(TAG, ""+ "accuracy: " + data.get("accuracy"));
 
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent contentIntent = PendingIntent.getActivity(
-                this, 0, intent,0);
+                this, 0, intent,PendingIntent.FLAG_CANCEL_CURRENT);
+
 
         //채널 생성
         createNotificationChannel(DEFAULT,"default channel");
@@ -59,8 +64,12 @@ public class FireBaseMessagingService extends com.google.firebase.messaging.Fire
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, builder.build());
 
-//        Intent intent_alert = new Intent(getApplicationContext(), EmergencyActivity.class);
-//        startActivity(intent_alert);
+        Intent intent_alert = new Intent(getApplicationContext(), EmergencyActivity.class);
+        intent_alert.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent_alert.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getApplicationContext().startActivity(intent_alert);
+
+
 
     }
 

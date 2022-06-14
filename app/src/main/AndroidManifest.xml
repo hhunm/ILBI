@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
 
     <application
         android:allowBackup="true"
@@ -28,6 +31,7 @@
 
         </activity>
         <activity android:name=".UserViewActivity"></activity>
+        <activity android:name=".UserModificationActivity"></activity>
         <activity android:name=".CameraActivity"></activity>
         <activity android:name=".ProtectorActivity"></activity>
         <activity android:name=".ProtectorModificationActivity"></activity>

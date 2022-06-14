@@ -23,8 +23,8 @@
         <RelativeLayout
             android:id="@+id/layout_protector_info"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="wrap_content"
+            style="@style/BLOCK_PADDING"
             android:background="@drawable/layout_border"
             android:backgroundTint="#FFFFFF">
 
@@ -39,7 +39,7 @@
 
             <TextView
                 android:id="@+id/txt_protector_info_title"
-                style="@style/TITLE_STYLE"
+                style="@style/TITLE_STYLE_NORMAL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/img_protector_info"
@@ -49,7 +49,7 @@
 
             <TextView
                 android:id="@+id/txt_protector_info_name"
-                style="@style/CONTENT_STYLE"
+                style="@style/CONTENT_STYLE_NORMAL"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_protector_info_title"
@@ -60,7 +60,7 @@
                 android:id="@+id/txt_protector_info_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/CONTENT_STYLE"
+                style="@style/CONTENT_STYLE_NORMAL"
                 android:layout_below="@id/txt_protector_info_name"
                 android:layout_toRightOf="@id/img_protector_info"
                 android:text="TextView" />
@@ -68,12 +68,11 @@
 
         <Button
             android:id="@+id/btn_protector_info"
-            style="@style/TITLE_STYLE"
+            style="@style/BUTTTON_STYLE_NORMAL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/layout_border"
-            android:text="Button"
-            android:textSize="20sp" />
+            android:text="Button" />
 
     </LinearLayout>
 </LinearLayout>

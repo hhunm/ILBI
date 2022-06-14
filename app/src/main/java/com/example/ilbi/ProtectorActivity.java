@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,7 +56,6 @@ public class ProtectorActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
     }
 
     @Override
@@ -77,6 +77,14 @@ public class ProtectorActivity extends AppCompatActivity {
 
     private void layout_init(){
         preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+        boolean isNormal = preferences.getBoolean("isNormal",true);
+        int tSize;
+        if(isNormal){
+            tSize = MainActivity.TEXT_SIZE_NORMAL;
+        }else{
+            tSize = MainActivity.TEXT_SIZE_BIG;
+        }
+
         //기기 해상도 정보 가져오기
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) getApplicationContext()
@@ -90,8 +98,6 @@ public class ProtectorActivity extends AppCompatActivity {
 
         //protector_info 뷰 패딩 설정
         layout_protector_info = findViewById(R.id.layout_protector_info);
-        int padding_unitL=  metrics.widthPixels / 100 * 4;
-        layout_protector_info.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
 
         //protector_info 이미지 뷰
         ImageView user_image = findViewById(R.id.img_protector_info);
@@ -101,22 +107,25 @@ public class ProtectorActivity extends AppCompatActivity {
         user_img_pr.height = metrics.widthPixels / 5;
         int margin_inside= metrics.widthPixels / 100 * 2;
         user_img_pr.setMarginEnd(margin_inside);
-        user_img_pr.topMargin = metrics.heightPixels / 100 * 2;
 
         //protector_info 타이틀 텍스트 뷰
         TextView protector_title = findViewById(R.id.txt_protector_info_title);
         protector_title.setText("보호자");
+        protector_title.setTextSize(Dimension.SP, tSize);
 
         //protector_info 이름
         TextView protector_name = findViewById(R.id.txt_protector_info_name);
         protector_name.setText(preferences.getString("protector_name","등록된 보호자가 없습니다"));
+        protector_name.setTextSize(Dimension.SP, tSize);
 
         //protector_info 번호
         TextView protector_number = findViewById(R.id.txt_protector_info_number);
         protector_number.setText(preferences.getString("protector_number","등록된 보호자가 없습니다"));
+        protector_number.setTextSize(Dimension.SP, tSize);
 
         //수정 버튼
         protector_modify = findViewById(R.id.btn_protector_info);
         protector_modify.setText("보호자 정보 수정");
+        protector_modify.setTextSize(Dimension.SP, tSize);
     }
 }

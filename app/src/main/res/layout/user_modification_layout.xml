@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#8BCD69"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        />
+
+    <LinearLayout
+        android:id="@+id/view_user_modify"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#DFDFDF"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/layout_user_modify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/BLOCK_PADDING"
+            android:background="@drawable/layout_border"
+            android:backgroundTint="#FFFFFF">
+
+            <ImageView
+                android:id="@+id/img_user_modify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/txt_user_title_modify"
+                style="@style/TITLE_STYLE_NORMAL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/img_user_modify"
+                android:layout_toRightOf="@id/img_user_modify"
+                android:text="테스트중" />
+
+            <EditText
+                android:id="@+id/txt_user_name_modify"
+                style="@style/CONTENT_STYLE_NORMAL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_user_title_modify"
+                android:layout_toRightOf="@id/img_user_modify"
+                android:inputType="textPersonName"
+                android:ems="12"
+                android:text="TextView" />
+
+            <EditText
+                android:id="@+id/txt_user_number_modify"
+                style="@style/CONTENT_STYLE_NORMAL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_user_name_modify"
+                android:layout_toRightOf="@id/img_user_modify"
+                android:inputType="number"
+                android:ems="12"
+                android:text="TextView" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_address_modify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/BLOCK_PADDING"
+            android:background="@drawable/layout_border"
+            android:backgroundTint="#FFFFFF">
+
+            <TextView
+                android:id="@+id/txt_user_address_modify"
+                style="@style/TITLE_STYLE_NORMAL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="테스트중" />
+
+            <EditText
+                android:id="@+id/txt_address_title_modify"
+                style="@style/CONTENT_STYLE_NORMAL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_user_address_modify"
+                android:layout_marginBottom="4dp"
+                android:ems="20"
+                android:inputType="textPersonName"
+                android:text="TextView" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_ip_modify"
+            style="@style/BLOCK_PADDING"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_border"
+            android:backgroundTint="#FFFFFF">
+
+            <TextView
+                android:id="@+id/txt_ip_title_usr_modify"
+                style="@style/TITLE_STYLE_NORMAL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="TextView" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_ip_title_usr_modify"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edit_ip1_modify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="number"
+
+                    android:maxLength="3" />
+
+                <EditText
+                    android:id="@+id/edit_ip2_modify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:maxLength="3" />
+
+                <EditText
+                    android:id="@+id/edit_ip3_modify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:maxLength="3" />
+
+                <EditText
+                    android:id="@+id/edit_ip4_modify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:maxLength="3" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_font_size_modify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_border"
+            style="@style/BLOCK_PADDING"
+            android:backgroundTint="#FFFFFF">
+
+            <TextView
+                android:id="@+id/txt_font_size_title_modify"
+                style="@style/TITLE_STYLE_NORMAL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="테스트중" />
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_font_size_title_modify"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbtn_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/CONTENT_STYLE_NORMAL"
+                    android:text="RadioButton"
+                    android:layout_weight="1"/>
+
+                <RadioButton
+                    android:id="@+id/rbtn_big"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/CONTENT_STYLE_NORMAL"
+                    android:text="RadioButton"
+                    android:layout_weight="1"/>
+            </RadioGroup>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_user_modify"
+            style="@style/BUTTTON_STYLE_NORMAL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_border"
+            android:text="Button" />
+    </LinearLayout>
+</LinearLayout>

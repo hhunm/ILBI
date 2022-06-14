@@ -11,11 +11,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,15 +46,8 @@ public class CameraActivity extends AppCompatActivity {
                 Toast.makeText(CameraActivity.this,"전화걸기",Toast.LENGTH_SHORT).show();
                 SharedPreferences preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
                 String number = preferences.getString("senior_number","abc");
-                int num;
 
-                try{
-                    num = Integer.parseInt(number);
-                }catch(NumberFormatException e){
-                    Toast.makeText(CameraActivity.this,"유효하지 않은 전화번호입니다",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Intent it = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + num));
+                Intent it = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
                 startActivity(it);
             }
         });
@@ -81,6 +79,15 @@ public class CameraActivity extends AppCompatActivity {
     }
     protected void layout_init() {
         preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+        boolean isNormal = preferences.getBoolean("isNormal",true);
+        int tSize;
+        if(isNormal){
+            tSize = MainActivity.TEXT_SIZE_NORMAL;
+        }else{
+            tSize = MainActivity.TEXT_SIZE_BIG;
+        }
+        String role = preferences.getString("role","");
+
         //기기 해상도 정보 가져오기
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) getApplicationContext()
@@ -94,8 +101,7 @@ public class CameraActivity extends AppCompatActivity {
 
         //phonecall 뷰 패딩 설정
         layout_phonecall = findViewById(R.id.layout_phonecall);
-        int padding_unitL = metrics.widthPixels / 100 * 4;
-        layout_phonecall.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
+        layout_guide = findViewById(R.id.layout_guide);
 
         //phonecall 이미지 뷰
         ImageView phonecall_image = findViewById(R.id.img_phonecall);
@@ -105,34 +111,53 @@ public class CameraActivity extends AppCompatActivity {
         phonecall_img_pr.height = metrics.widthPixels / 7;
         int margin_inside = metrics.widthPixels / 100 * 2;
         phonecall_img_pr.setMarginEnd(margin_inside);
-        phonecall_img_pr.topMargin = metrics.heightPixels / 100 * 1;
 
-        //phonecall 타이틀 텍스트 뷰
-        TextView phonecall_title = findViewById(R.id.txt_phonecall_title);
-        phonecall_title.setText("통화");
+        if(role.equals("Protector")){
+            //phonecall 타이틀 텍스트 뷰
+            TextView phonecall_title = findViewById(R.id.txt_phonecall_title);
+            phonecall_title.setText("통화");
+            phonecall_title.setTextSize(Dimension.SP, tSize);
 
-       //phonecall 내용 텍스트 뷰
-        TextView phonecall_content = findViewById(R.id.txt_phonecall_content);
-        phonecall_content.setText(preferences.getString("protector_name","등록된 보호자가 없습니다."));
+            //phonecall 내용 텍스트 뷰
+            TextView phonecall_content = findViewById(R.id.txt_phonecall_content);
+            phonecall_content.setText(preferences.getString("senior_name",""));
+            phonecall_content.setTextSize(Dimension.SP, tSize);
 
-        //guide 뷰 패딩 설정
-        layout_guide = findViewById(R.id.layout_guide);
-        layout_guide.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
+            //guide 뷰 패딩 설정
+            layout_guide = findViewById(R.id.layout_guide);
 
-        //guide 타이틀 텍스트 뷰
-        TextView guide_title = findViewById(R.id.txt_guide_title);
-        RelativeLayout.LayoutParams guide_title_pr = (RelativeLayout.LayoutParams) guide_title.getLayoutParams();
-        guide_title.setText("119 신고 방법");
-        guide_title_pr.setMarginEnd(margin_inside);
-        guide_title_pr.topMargin = metrics.heightPixels / 100 * 1;
-        guide_title_pr.bottomMargin = metrics.heightPixels / 100 * 1;
+            //guide 타이틀 텍스트 뷰
+            TextView guide_title = findViewById(R.id.txt_guide_title);
+            RelativeLayout.LayoutParams guide_title_pr = (RelativeLayout.LayoutParams) guide_title.getLayoutParams();
+            guide_title.setText("119 신고 방법");
+            guide_title_pr.setMarginEnd(margin_inside);
+            guide_title.setTextSize(Dimension.SP, tSize);
 
-        //guide 내용 텍스트 뷰
-        TextView address_content = findViewById(R.id.txt_guide_content);
-        address_content.setText("1. 침착하게 119에 신고해주세요\n" +
-                "2. 사고 위치를 알려주세요\n" +
-                "3. 사고상황을 알려주세요\n" +
-                "4. 전화를 끊지말고 119의 지시에 따라주세요\n" +
-                "5. 전화를 잘 받아주세요");
+            //guide 내용 텍스트 뷰
+            TextView address_content = findViewById(R.id.txt_guide_content);
+            address_content.setText("1. 침착하게 119에 신고해주세요\n" +
+                    "2. 사고 위치를 알려주세요\n" +
+                    "3. 사고상황을 알려주세요\n" +
+                    "4. 전화를 끊지말고 119의 지시에 따라주세요\n" +
+                    "5. 전화를 잘 받아주세요");
+            address_content.setTextSize(Dimension.SP, tSize);
+        }else{
+            LinearLayout v = findViewById(R.id.view_camera_for_protector);
+            v.removeAllViews();
+        }
+
+        WebView wb_camera = findViewById(R.id.wb_camera);
+        wb_camera.setWebViewClient(new WebViewClient());
+        wb_camera.setBackgroundColor(255);
+
+        WebSettings webSettings = wb_camera.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setSupportZoom(true);
+
+        wb_camera.loadUrl("http://"+preferences.getString("camera_ip",null)+":9999/?action=stream");
+
     }
 }

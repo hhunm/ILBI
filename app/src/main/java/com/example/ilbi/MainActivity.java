@@ -1,5 +1,6 @@
 package com.example.ilbi;
 
+import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,14 +12,18 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.telephony.SmsManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -27,6 +32,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -51,21 +57,18 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout layout_call;
     private RelativeLayout layout_cancel;
     private RelativeLayout layout_protector;
-    private RelativeLayout layout_setting;
     private RelativeLayout layout_help;
+    private Switch st_camera;
     private final String TAG = "MainActivity";
+    public static final int TEXT_SIZE_NORMAL = 22;
+    public static final int TEXT_SIZE_BIG = 28;
+    private SharedPreferences preferences;
+    private BroadcastReceiver br;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         setContentView(R.layout.main);
-
-//        //액션바 없애기
-//        ActionBar actionbar = getSupportActionBar();
-//        actionbar.hide();
 
         //툴바
         toolbarInit();
@@ -87,6 +90,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        //오버레이
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)){
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:"+getPackageName()));
+            startActivityForResult(intent, 5469);
+        }else{
+            Toast.makeText(getApplicationContext(),"오버레이 권한 있음",Toast.LENGTH_SHORT).show();
+        }
+
         //fcm
         FirebaseMessaging.getInstance().subscribeToTopic("fall").addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -100,6 +111,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        st_camera = findViewById(R.id.switch_fall);
+        st_camera.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    st_camera.setText("ON");
+                }else{
+                    st_camera.setText("OFF");
+                }
+            }
+        });
 
         //camera 클릭 이벤트
         layout_camera.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, format.format(current_time));
                             String msg = format.format(current_time)+" Adress에서 낙상 사고를 감지했습니다. ";
                             smsManager.sendTextMessage("5556",null,msg,null,null);
+                            //smsManager.sendTextMessage("01096096418",null,msg,null,null);
                             Toast.makeText(MainActivity.this,"전송에 성공했습니다.",Toast.LENGTH_SHORT).show();
                         }catch(Exception e){
                             Toast.makeText(MainActivity.this,"전송에 실패하였습니다.",Toast.LENGTH_SHORT).show();
@@ -160,8 +183,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
 
+    }
 
 
     @Override
@@ -175,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.menu_mypage:
-                //Toast.makeText(getApplicationContext(), "마이페이지", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), UserViewActivity.class);
                 startActivity(intent);
                 return true;
@@ -189,7 +211,26 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        MainActivity.this.finish();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
     private void layoutInit(){
+        preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+        boolean isNormal = preferences.getBoolean("isNormal",true);
+
+        int tSize;
+        if(isNormal){
+            tSize = TEXT_SIZE_NORMAL;
+        }else{
+            tSize = TEXT_SIZE_BIG;
+        }
+
         //기기 해상도 정보 가져오기
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) getApplicationContext()
@@ -204,8 +245,6 @@ public class MainActivity extends AppCompatActivity {
 
         //fall 뷰 패딩 설정
         layout_fall = findViewById(R.id.layout_fall);
-        int padding_unitL=  metrics.widthPixels / 100 * 4;
-        layout_fall.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
 
         //fall 이미지 뷰
         ImageView fall_image = findViewById(R.id.img_fall);
@@ -215,15 +254,16 @@ public class MainActivity extends AppCompatActivity {
         fall_img_pr.height = metrics.widthPixels / 6;
         int margin_inside= metrics.widthPixels / 100 * 2;
         fall_img_pr.setMarginEnd(margin_inside);
-        fall_img_pr.topMargin = metrics.heightPixels / 100 * 2;
 
         //fall 타이틀 텍스트 뷰
         TextView fall_title = findViewById(R.id.txt_fall_title);
         fall_title.setText("낙상 감지가 중단되었습니다");
+        fall_title.setTextSize(Dimension.SP, tSize);
 
         //fall 내용 텍스트 뷰
         TextView fall_content = findViewById(R.id.txt_fall_content);
         fall_content.setText("카메라가 꺼져 있습니다");
+        fall_content.setTextSize(Dimension.SP, tSize);
 
         //fall 스위치
         Switch fall_switch = findViewById(R.id.switch_fall);
@@ -234,7 +274,6 @@ public class MainActivity extends AppCompatActivity {
 
         //camera 뷰 패딩 설정
         layout_camera = findViewById(R.id.view_camera);
-        layout_camera.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
 
         //camera 이미지 뷰
         ImageView camera_image = findViewById(R.id.img_camera);
@@ -243,23 +282,19 @@ public class MainActivity extends AppCompatActivity {
         camera_img_pr.width = metrics.widthPixels / 6;
         camera_img_pr.height = metrics.widthPixels / 6;
         camera_img_pr.setMarginEnd(margin_inside);
-        camera_img_pr.topMargin = metrics.heightPixels / 100 * 2;
 
         //camera 타이틀 텍스트 뷰
         TextView camera_title = findViewById(R.id.txt_camera_title);
         camera_title.setText("실시간 모니터링");
+        camera_title.setTextSize(Dimension.SP, tSize);
 
         //camera 내용 텍스트 뷰
         TextView camera_content = findViewById(R.id.txt_camera_content);
-        camera_content.setText("0명의 보호자가 영상을 시청하고 있습니다");
-
-        //camera 인원수 텍스트 뷰
-        TextView camera_num = findViewById(R.id.txt_camera_num);
-        camera_num.setText("0명");
+        camera_content.setText("보호자가 영상을 시청하고 있습니다");
+        camera_content.setTextSize(Dimension.SP, tSize);
 
         //call 뷰 패딩 설정
         layout_call = findViewById(R.id.layout_call);
-        layout_call.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
 
         //call 이미지 뷰
         ImageView call_image = findViewById(R.id.img_call);
@@ -268,19 +303,19 @@ public class MainActivity extends AppCompatActivity {
         call_img_pr.width = metrics.widthPixels / 7;
         call_img_pr.height = metrics.widthPixels / 7;
         call_img_pr.setMarginEnd(margin_inside);
-        call_img_pr.topMargin = metrics.heightPixels / 100 * 2;
 
         //call 타이틀 텍스트 뷰
         TextView call_title = findViewById(R.id.txt_call_title);
         call_title.setText("긴급호출");
+        call_title.setTextSize(Dimension.SP, tSize);
 
         //call 내용 텍스트 뷰
         TextView call_content = findViewById(R.id.txt_call_content);
         call_content.setText("119에 긴급신고 문자를 보냅니다");
+        call_content.setTextSize(Dimension.SP, tSize);
 
         //cancel 뷰 패딩 설정
         layout_cancel = findViewById(R.id.layout_cancel);
-        layout_cancel.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
 
         //cancel 이미지 뷰
         ImageView cancel_image = findViewById(R.id.img_cancel);
@@ -288,21 +323,22 @@ public class MainActivity extends AppCompatActivity {
         cancel_image.setImageResource(R.drawable.cancel_image);
         cancel_img_pr.width = metrics.widthPixels / 7;
         cancel_img_pr.height = metrics.widthPixels / 7;
-        cancel_img_pr.setMarginEnd(margin_inside);
-        cancel_img_pr.topMargin = metrics.heightPixels / 100 * 2;
+        cancel_img_pr.setMarginEnd(30);
 
         //cancel 타이틀 텍스트 뷰
         TextView cancel_title = findViewById(R.id.txt_cancel_title);
         cancel_title.setText("신고 취소");
+        cancel_title.setTextSize(Dimension.SP, tSize);
 
         //cancel 내용 텍스트 뷰
         TextView cancel_content = findViewById(R.id.txt_cancel_content);
         cancel_content.setText("119 신고를 취소합니다");
+        cancel_content.setTextSize(Dimension.SP, tSize);
 
 
         //protector 뷰 패딩 설정
         layout_protector = findViewById(R.id.layout_protector);
-        layout_protector.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
+
 
         //protector 이미지 뷰
         ImageView protector_image = findViewById(R.id.img_protector);
@@ -311,15 +347,16 @@ public class MainActivity extends AppCompatActivity {
         protector_img_pr.width = metrics.widthPixels / 7;
         protector_img_pr.height = metrics.widthPixels / 7;
         protector_img_pr.setMarginEnd(margin_inside);
-        protector_img_pr.topMargin = metrics.heightPixels / 100 * 2;
 
         //protector 타이틀 텍스트 뷰
         TextView protector_title = findViewById(R.id.txt_protector_title);
         protector_title.setText("보호자");
+        protector_title.setTextSize(Dimension.SP, tSize);
 
         //protector 보호자 이름 텍스트 뷰
         TextView protector_name = findViewById(R.id.txt_protector_name);
         protector_name.setText("등록된 보호자가 없습니다");
+        protector_name.setTextSize(Dimension.SP, tSize);
 
         //protector 번호 텍스트 뷰
         TextView protector_number = findViewById(R.id.txt_protector_number);
@@ -328,8 +365,6 @@ public class MainActivity extends AppCompatActivity {
 
         //help 뷰 패딩 설정
         layout_help = findViewById(R.id.layout_help);
-        layout_help.setPadding(padding_unitL, padding_unitL, padding_unitL, padding_unitL);
-        LinearLayout.LayoutParams help_layout_pr = (LinearLayout.LayoutParams) layout_help.getLayoutParams();
 
         //help 이미지 뷰
         ImageView help_image = findViewById(R.id.img_help);
@@ -342,6 +377,7 @@ public class MainActivity extends AppCompatActivity {
         //help 타이틀 텍스트 뷰
         TextView help_title = findViewById(R.id.txt_help_title);
         help_title.setText("도움말");
+        help_title.setTextSize(Dimension.SP, tSize);
 
 
     }

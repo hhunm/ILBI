@@ -34,15 +34,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                style = "@style/TITLE_STYLE"/>
+                style = "@style/TITLE_STYLE_NORMAL"/>
 
             <EditText
                 android:id="@+id/edit_sn_name"
-                style="@style/CONTENT_STYLE"
+                style="@style/CONTENT_STYLE_NORMAL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                android:ems="10"
+                android:ems="12"
                 android:inputType="textPersonName" />
 
             <TextView
@@ -50,11 +50,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                style = "@style/TITLE_STYLE"/>
+                style = "@style/TITLE_STYLE_NORMAL"/>
 
             <EditText
                 android:id="@+id/edit_sn_number"
-                style="@style/CONTENT_STYLE"
+                style="@style/CONTENT_STYLE_NORMAL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
@@ -65,12 +65,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                style = "@style/TITLE_STYLE"/>
+                style = "@style/TITLE_STYLE_NORMAL"/>
 
 
             <EditText
                 android:id="@+id/edit_sn_address"
-                style="@style/CONTENT_STYLE"
+                style="@style/CONTENT_STYLE_NORMAL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
@@ -81,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Button"
-                style = "@style/TITLE_STYLE"/>
+                style = "@style/TITLE_STYLE_NORMAL"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

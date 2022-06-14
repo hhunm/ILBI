@@ -22,6 +22,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StartGeneralActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Button next_btn;
@@ -43,6 +46,10 @@ public class StartGeneralActivity extends AppCompatActivity {
         edit_number = findViewById(R.id.edit_number_gn);
         rb_senior = findViewById(R.id.rbtn_senior);
         rb_protector = findViewById(R.id.rbtn_protector);
+        EditText ip1 = findViewById(R.id.edit_ip1);
+        EditText ip2 = findViewById(R.id.edit_ip2);
+        EditText ip3 = findViewById(R.id.edit_ip3);
+        EditText ip4 = findViewById(R.id.edit_ip4);
         SharedPreferences preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
 
         next_btn.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +59,13 @@ public class StartGeneralActivity extends AppCompatActivity {
                 String number = edit_number.getText().toString();
                 String role = null;
                 SharedPreferences.Editor editor = preferences.edit();
+                ArrayList<String> ip = new ArrayList<String>(4);
+                ip.add(ip1.getText().toString());
+                ip.add(ip2.getText().toString());
+                ip.add(ip3.getText().toString());
+                ip.add(ip4.getText().toString());
+
+
                 Intent intent;
 
                 if(name.length() == 0 || number.length() == 0){
@@ -78,6 +92,18 @@ public class StartGeneralActivity extends AppCompatActivity {
                     return;
                 }
 
+                String camera_ip = "";
+
+                for(int i = 0; i < 4 ; i++){
+                    if(ip.get(i).length() == 0){
+                        Toast.makeText(StartGeneralActivity.this,"올바른 ip를 입력해주세요",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    camera_ip = camera_ip.concat(ip.get(i));
+                    camera_ip = camera_ip.concat(".");
+                }
+                camera_ip = camera_ip.substring(0, camera_ip.length() - 1);
+                editor.putString("camera_ip",camera_ip);
 
                 editor.commit();
 
@@ -85,7 +111,7 @@ public class StartGeneralActivity extends AppCompatActivity {
                 Log.d(TAG, "senior_number: " + preferences.getString("senior_number",""));
                 Log.d(TAG, "protector_name: " + preferences.getString("protector_name",""));
                 Log.d(TAG, "protector_number: " + preferences.getString("protector_number",""));
-
+                Log.d(TAG, "camera_ip: " + preferences.getString("camera_ip",""));
 
                 startActivity(intent);
 
@@ -152,6 +178,9 @@ public class StartGeneralActivity extends AppCompatActivity {
 
         RadioButton senior_rbtn = findViewById(R.id.rbtn_senior);
         senior_rbtn.setText("피보호자");
+
+        TextView ip_title = findViewById(R.id.txt_ip_title_gn);
+        ip_title.setText("낙상감지 시스템의 ip주소");
 
         next_btn = findViewById(R.id.btn_start_gn);
         next_btn.setText("다음");
