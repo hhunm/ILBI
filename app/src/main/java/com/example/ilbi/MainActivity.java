@@ -9,6 +9,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -23,6 +24,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.telephony.SmsManager;
 import android.util.DisplayMetrics;
@@ -63,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int TEXT_SIZE_NORMAL = 22;
     public static final int TEXT_SIZE_BIG = 28;
     private SharedPreferences preferences;
-    private BroadcastReceiver br;
 
+
+    @SuppressLint("InvalidWakeLockTag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         toolbarInit();
         //레이아웃
         layoutInit();
+
+
 
         //sms 권한 확인
         int permissionCheck = ContextCompat.checkSelfPermission(
@@ -167,7 +172,9 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, format.format(current_time));
                             String msg = format.format(current_time)+" Adress에서 낙상 사고를 감지했습니다. ";
                             smsManager.sendTextMessage("5556",null,msg,null,null);
-                            //smsManager.sendTextMessage("01096096418",null,msg,null,null);
+
+                            SharedPreferences preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+                            smsManager.sendTextMessage(preferences.getString("protector_number","0"),null,msg,null,null);
                             Toast.makeText(MainActivity.this,"전송에 성공했습니다.",Toast.LENGTH_SHORT).show();
                         }catch(Exception e){
                             Toast.makeText(MainActivity.this,"전송에 실패하였습니다.",Toast.LENGTH_SHORT).show();
@@ -290,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
 
         //camera 내용 텍스트 뷰
         TextView camera_content = findViewById(R.id.txt_camera_content);
-        camera_content.setText("보호자가 영상을 시청하고 있습니다");
+        camera_content.setText("카메라의 영상을 실시간으로 확인할 수 있습니다");
         camera_content.setTextSize(Dimension.SP, tSize);
 
         //call 뷰 패딩 설정
