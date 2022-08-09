@@ -61,6 +61,7 @@ public class FireBaseMessagingService extends com.google.firebase.messaging.Fire
         //공유 정보
         SharedPreferences preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
         String role = preferences.getString("role",null);
+        Log.d(TAG,"role: "+ role);
 
         //채널 생성
         if(preferences.getBoolean("DEFAULTCHANNEL",false)) {
@@ -115,13 +116,6 @@ public class FireBaseMessagingService extends com.google.firebase.messaging.Fire
 //            notificationManager.notify(0, builder.build());
 //            Log.d(TAG,"else");
 //        }
-
-
-//        Intent intent_alert = new Intent(getApplicationContext(), EmergencyActivity.class);
-//        intent_alert.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        intent_alert.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        getApplicationContext().startActivity(intent_alert);
-
 
 
     }

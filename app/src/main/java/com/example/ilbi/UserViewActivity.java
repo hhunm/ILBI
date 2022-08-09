@@ -180,19 +180,6 @@ public class UserViewActivity extends AppCompatActivity {
         user_modify.setText("수정");
         user_modify.setTextSize(Dimension.SP, tSize);
 
-        //record 뷰 패딩 설정
-        layout_record = findViewById(R.id.layout_record);
-
-        //낙상 타이틀 텍스트 뷰
-        TextView record_title = findViewById(R.id.txt_record_title);
-        record_title.setText("낙상기록");
-        record_title.setTextSize(Dimension.SP, tSize);
-
-
-        TextView record1 = findViewById(R.id.txt_record1);
-        record1.setText("낙상기록이 없습니다");
-        record1.setTextSize(Dimension.SP, tSize);
-
 
 
     }

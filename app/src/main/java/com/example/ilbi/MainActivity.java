@@ -44,6 +44,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.SimpleDateFormat;
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout layout_fall;
     private RelativeLayout layout_camera;
     private RelativeLayout layout_call;
-    private RelativeLayout layout_cancel;
+    private RelativeLayout layout_record;
     private RelativeLayout layout_protector;
     private RelativeLayout layout_help;
     private Switch st_camera;
@@ -77,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         toolbarInit();
         //레이아웃
         layoutInit();
-
 
 
         //sms 권한 확인
@@ -116,17 +120,75 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //카메라 스위치
+        boolean isNormal = preferences.getBoolean("isNormal",true);
+        int tSize;
+        if(isNormal){
+            tSize = TEXT_SIZE_NORMAL;
+        }else{
+            tSize = TEXT_SIZE_BIG;
+        }
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://test-8bbfd-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        DatabaseReference isCameraOn = database.getReference("isCameraOn");
+        //데베 리스너
+        // Read from the database
+        isCameraOn.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.getValue(String.class);
+                SharedPreferences.Editor editor = preferences.edit();
+
+                Log.d(TAG, "Value is: " + value);
+
+                switch(value){
+                    case "ON":
+                        Log.d(TAG, "카메라 ON");
+                        editor.putBoolean("isCameraOn",true);
+                        camera_layout(true, tSize);
+                        break;
+                    case "OFF":
+                        Log.d(TAG, "카메라 OFF");
+                        editor.putBoolean("isCameraOn",false);
+                        camera_layout(false, tSize);
+                        break;
+                }
+                editor.commit();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+
+
         st_camera = findViewById(R.id.switch_fall);
         st_camera.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor editor = preferences.edit();
+
                 if(isChecked){
-                    st_camera.setText("ON");
+                    isCameraOn.setValue("ON");
+
                 }else{
-                    st_camera.setText("OFF");
+                    isCameraOn.setValue("OFF");
+
                 }
+
+
+
             }
+
+
         });
+
+
 
         //camera 클릭 이벤트
         layout_camera.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +209,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //record 클릭 이벤트
+        layout_record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,"record",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), RecordActivity.class);
+                startActivity(intent);
+            }
+        });
+
         //긴급호출
         layout_call.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,10 +243,10 @@ public class MainActivity extends AppCompatActivity {
                             format.setTimeZone(tz);
                             Date current_time = new Date();
                             Log.d(TAG, format.format(current_time));
-                            String msg = format.format(current_time)+" Adress에서 낙상 사고를 감지했습니다. ";
-                            smsManager.sendTextMessage("5556",null,msg,null,null);
-
                             SharedPreferences preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+                            String msg = format.format(current_time)+" "+preferences.getString("senior_address","") + "에서 낙상 사고를 감지했습니다. ";
+
+
                             smsManager.sendTextMessage(preferences.getString("protector_number","0"),null,msg,null,null);
                             Toast.makeText(MainActivity.this,"전송에 성공했습니다.",Toast.LENGTH_SHORT).show();
                         }catch(Exception e){
@@ -262,22 +335,26 @@ public class MainActivity extends AppCompatActivity {
         int margin_inside= metrics.widthPixels / 100 * 2;
         fall_img_pr.setMarginEnd(margin_inside);
 
-        //fall 타이틀 텍스트 뷰
-        TextView fall_title = findViewById(R.id.txt_fall_title);
-        fall_title.setText("낙상 감지가 중단되었습니다");
-        fall_title.setTextSize(Dimension.SP, tSize);
-
-        //fall 내용 텍스트 뷰
-        TextView fall_content = findViewById(R.id.txt_fall_content);
-        fall_content.setText("카메라가 꺼져 있습니다");
-        fall_content.setTextSize(Dimension.SP, tSize);
 
         //fall 스위치
         Switch fall_switch = findViewById(R.id.switch_fall);
-        RelativeLayout.LayoutParams fall_switch_pr = (RelativeLayout.LayoutParams) fall_switch.getLayoutParams();
-        fall_switch_pr.width = 320;
-        fall_switch_pr.height = 40;
-        fall_switch.setText("OFF");
+        if(preferences.getString("role","").equals("Senior")) {
+            RelativeLayout.LayoutParams fall_switch_pr = (RelativeLayout.LayoutParams) fall_switch.getLayoutParams();
+            fall_switch_pr.width = 320;
+            fall_switch_pr.height = 40;
+            fall_switch.setText("OFF");
+        }else{
+            fall_switch.setVisibility(View.GONE);
+        }
+
+        //camera on off 확인
+//        boolean isCameraOn = preferences.getBoolean("isCameraOn",false);
+//        if(isCameraOn){
+//            fall_switch.setChecked(true);
+//        }else{
+//            fall_switch.setChecked(false);
+//        }
+//        camera_layout(isCameraOn, tSize);
 
         //camera 뷰 패딩 설정
         layout_camera = findViewById(R.id.view_camera);
@@ -321,27 +398,6 @@ public class MainActivity extends AppCompatActivity {
         call_content.setText("119에 긴급신고 문자를 보냅니다");
         call_content.setTextSize(Dimension.SP, tSize);
 
-        //cancel 뷰 패딩 설정
-        layout_cancel = findViewById(R.id.layout_cancel);
-
-        //cancel 이미지 뷰
-        ImageView cancel_image = findViewById(R.id.img_cancel);
-        RelativeLayout.LayoutParams cancel_img_pr = (RelativeLayout.LayoutParams) cancel_image.getLayoutParams();
-        cancel_image.setImageResource(R.drawable.cancel_image);
-        cancel_img_pr.width = metrics.widthPixels / 7;
-        cancel_img_pr.height = metrics.widthPixels / 7;
-        cancel_img_pr.setMarginEnd(30);
-
-        //cancel 타이틀 텍스트 뷰
-        TextView cancel_title = findViewById(R.id.txt_cancel_title);
-        cancel_title.setText("신고 취소");
-        cancel_title.setTextSize(Dimension.SP, tSize);
-
-        //cancel 내용 텍스트 뷰
-        TextView cancel_content = findViewById(R.id.txt_cancel_content);
-        cancel_content.setText("119 신고를 취소합니다");
-        cancel_content.setTextSize(Dimension.SP, tSize);
-
 
         //protector 뷰 패딩 설정
         layout_protector = findViewById(R.id.layout_protector);
@@ -362,12 +418,31 @@ public class MainActivity extends AppCompatActivity {
 
         //protector 보호자 이름 텍스트 뷰
         TextView protector_name = findViewById(R.id.txt_protector_name);
-        protector_name.setText("등록된 보호자가 없습니다");
+        protector_name.setText("보호자 정보를 확인할 수 있습니다");
         protector_name.setTextSize(Dimension.SP, tSize);
 
         //protector 번호 텍스트 뷰
         TextView protector_number = findViewById(R.id.txt_protector_number);
         protector_number.setText("");
+
+        //record 뷰
+        layout_record = findViewById(R.id.layout_record);
+
+        ImageView record_image = findViewById(R.id.img_record);
+        RelativeLayout.LayoutParams record_img_pr = (RelativeLayout.LayoutParams) record_image.getLayoutParams();
+        record_image.setImageResource(R.drawable.record);
+        record_img_pr.width = metrics.widthPixels / 7;
+        record_img_pr.height = metrics.widthPixels / 7;
+        record_img_pr.setMarginEnd(30);
+
+        TextView record_title = findViewById(R.id.txt_record_title);
+        record_title.setText("낙상기록");
+        record_title.setTextSize(Dimension.SP, tSize);
+
+
+        TextView record1 = findViewById(R.id.txt_record_content);
+        record1.setText("낙상기록을 확인할 수 있습니다");
+        record1.setTextSize(Dimension.SP, tSize);
 
 
         //help 뷰 패딩 설정
@@ -388,4 +463,26 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    void camera_layout(boolean isON,int tSize){
+        st_camera = findViewById(R.id.switch_fall);
+        //fall 타이틀 텍스트 뷰
+        TextView fall_title = findViewById(R.id.txt_fall_title);
+        //fall 내용 텍스트 뷰
+        TextView fall_content = findViewById(R.id.txt_fall_content);
+        if(isON){
+            fall_content.setText("카메라가 켜져 있습니다");
+            fall_content.setTextSize(Dimension.SP, tSize);
+            fall_title.setText("낙상 감지 중 입니다");
+            fall_title.setTextSize(Dimension.SP, tSize);
+            st_camera.setText("ON");
+        }else{
+            fall_content.setText("카메라가 꺼져 있습니다");
+            fall_content.setTextSize(Dimension.SP, tSize);
+            fall_title.setText("낙상 감지가 중단되었습니다");
+            fall_title.setTextSize(Dimension.SP, tSize);
+            st_camera.setText("OFF");
+        }
+    }
 }
+
+

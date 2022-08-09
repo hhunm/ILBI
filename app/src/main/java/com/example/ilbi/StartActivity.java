@@ -29,26 +29,32 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.start_layout);
         layout_init();
 
-        //만약 어플 최초 구동이면 startView
-        SharedPreferences pref = getSharedPreferences("UserInfo", MODE_PRIVATE);
-
-//        SharedPreferences.Editor editor = pref.edit();
-//        editor.putBoolean("isFirst", true);
-//        editor.commit();
-
-        boolean first = pref.getBoolean("isFirst", true);
-
-       Log.d(TAG, "first: "+ first);
-
-        if(first){
-            Log.d(TAG, "first");
-        }
-        else{
-            Log.d(TAG, "not first");
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
+//        try{
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        //만약 어플 최초 구동이면 startView
+//        SharedPreferences pref = getSharedPreferences("UserInfo", MODE_PRIVATE);
+//
+////        SharedPreferences.Editor editor = pref.edit();
+////        editor.putBoolean("isFirst", true);
+////        editor.commit();
+//
+//        boolean first = pref.getBoolean("isFirst", true);
+//
+//       Log.d(TAG, "first: "+ first);
+//
+//        if(first){
+//            Log.d(TAG, "first");
+//        }
+//        else{
+//            Log.d(TAG, "not first");
+//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(intent);
+//        }
 
         //버튼 클릭
         start_btn.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +65,8 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 
     }
 

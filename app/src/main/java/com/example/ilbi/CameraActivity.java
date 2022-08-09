@@ -159,5 +159,18 @@ public class CameraActivity extends AppCompatActivity {
 
         wb_camera.loadUrl("http://"+preferences.getString("camera_ip",null)+":9999/?action=stream");
 
+        //카메라 켜져있는지 확인
+        boolean isCameraOn = preferences.getBoolean("isCameraOn",false);
+        TextView camera_on_off = findViewById(R.id.txt_camera_on_off);
+        camera_on_off.setTextSize(Dimension.SP, tSize);
+
+        if(!isCameraOn){
+            wb_camera.setVisibility(View.INVISIBLE);
+            camera_on_off.setText("카메라가 꺼져 있습니다");
+        }else{
+            wb_camera.setVisibility(View.VISIBLE);
+            camera_on_off.setText("카메라가 켜져 있습니다");
+        }
+
     }
 }
