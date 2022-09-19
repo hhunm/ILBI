@@ -151,6 +151,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/layout_border"
+                    android:backgroundTint="#8BCD69"
                     android:text="Button" />
 
                 <Button
@@ -159,6 +160,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/layout_border"
+                    android:backgroundTint="#8BCD69"
                     android:text="초기화" />
 
             </LinearLayout>

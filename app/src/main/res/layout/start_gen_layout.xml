@@ -154,9 +154,10 @@
 
             <Button
                 android:id="@+id/btn_start_gn"
+                style="@style/BUTTTON_STYLE_NORMAL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style = "@style/BUTTTON_STYLE_NORMAL"
+                android:backgroundTint="#8BCD69"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="Button" />

@@ -89,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
                 this, Manifest.permission.SEND_SMS);
 
         if(permissionCheck == PackageManager.PERMISSION_GRANTED){
-            Toast.makeText(getApplicationContext(),"SMS수신 권한 있음",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"SMS수신 권한 있음",Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(getApplicationContext(),"SMS수신 권한 없음",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"SMS수신 권한 없음",Toast.LENGTH_SHORT).show();
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 requestPermissions(
                         new String[]{Manifest.permission.SEND_SMS}, 1000);
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:"+getPackageName()));
             startActivityForResult(intent, 5469);
         }else{
-            Toast.makeText(getApplicationContext(),"오버레이 권한 있음",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"오버레이 권한 있음",Toast.LENGTH_SHORT).show();
         }
 
         //fcm
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(getApplicationContext(),"구독 성공",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),"구독 성공",Toast.LENGTH_SHORT).show();
                     //구독성공뜸
                 }else{
                     Toast.makeText(getApplicationContext(),"구독 실패",Toast.LENGTH_SHORT).show();
@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://test-8bbfd-default-rtdb.asia-southeast1.firebasedatabase.app/");
         DatabaseReference isCameraOn = database.getReference("isCameraOn");
+
         //데베 리스너
         // Read from the database
         isCameraOn.addValueEventListener(new ValueEventListener() {
@@ -194,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
         layout_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"camera",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this,"camera",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
                 startActivity(intent);
             }
@@ -204,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
         layout_protector.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"protector",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this,"protector",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), ProtectorActivity.class);
                 startActivity(intent);
             }
@@ -214,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         layout_record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"record",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this,"record",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), RecordActivity.class);
                 startActivity(intent);
             }
@@ -232,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("예", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(MainActivity.this,"예",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this,"예",Toast.LENGTH_SHORT).show();
                         try{
                             SmsManager smsManager = SmsManager.getDefault();
                             if(smsManager == null){
@@ -257,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 }).setNeutralButton("아니오", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(MainActivity.this,"아니오",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this,"아니오",Toast.LENGTH_SHORT).show();
                     }
                 }).show();
 
@@ -475,12 +476,14 @@ public class MainActivity extends AppCompatActivity {
             fall_title.setText("낙상 감지 중 입니다");
             fall_title.setTextSize(Dimension.SP, tSize);
             st_camera.setText("ON");
+            st_camera.setChecked(true);
         }else{
             fall_content.setText("카메라가 꺼져 있습니다");
             fall_content.setTextSize(Dimension.SP, tSize);
             fall_title.setText("낙상 감지가 중단되었습니다");
             fall_title.setTextSize(Dimension.SP, tSize);
             st_camera.setText("OFF");
+            st_camera.setChecked(false);
         }
     }
 }

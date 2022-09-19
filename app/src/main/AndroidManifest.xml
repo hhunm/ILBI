@@ -19,7 +19,7 @@
         android:roundIcon="@mipmap/icon_f"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.ILBI">
+        android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity android:name=".StartActivity">
         </activity>
         <activity android:name=".SplashActivity"
@@ -41,7 +41,6 @@
         <activity android:name=".CameraActivity"></activity>
         <activity android:name=".ProtectorActivity"></activity>
         <activity android:name=".ProtectorModificationActivity"></activity>
-        <activity android:name=".EmergencyActivity"/>
         <activity android:name=".RecordActivity"/>
 
         <service android:name=".FireBaseMessagingService">
