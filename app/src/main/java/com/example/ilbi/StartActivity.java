@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class StartActivity extends AppCompatActivity {
     Button start_btn;
+    Button login_btn;
     private final String TAG = "StartActivity";
 
     @Override
@@ -60,8 +61,17 @@ public class StartActivity extends AppCompatActivity {
         start_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(StartActivity.this,"start!",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(StartActivity.this,"start!",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), StartGeneralActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        login_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(StartActivity.this,"start!",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -78,11 +88,16 @@ public class StartActivity extends AppCompatActivity {
 
         ImageView logo = findViewById(R.id.img_logo);
         LinearLayout.LayoutParams logo_pr = (LinearLayout.LayoutParams) logo.getLayoutParams();
-        logo_pr.setMargins(0,metrics.heightPixels/4,0,metrics.heightPixels/5);
+        logo_pr.setMargins(0,metrics.heightPixels/4,0,metrics.heightPixels/6);
+
+        login_btn = findViewById(R.id.btn_login);
+        LinearLayout.LayoutParams login_btn_pr = (LinearLayout.LayoutParams) login_btn.getLayoutParams();
+        login_btn.setText("로그인");
+        login_btn_pr.width = metrics.widthPixels/5 * 4;
 
         start_btn = findViewById(R.id.btn_start);
         LinearLayout.LayoutParams start_btn_pr = (LinearLayout.LayoutParams) start_btn.getLayoutParams();
-        start_btn.setText("일비 시작하기");
+        start_btn.setText("회원가입");
         start_btn_pr.width = metrics.widthPixels/5 * 4;
 
     }

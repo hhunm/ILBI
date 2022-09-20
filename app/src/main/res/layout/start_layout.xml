@@ -13,14 +13,29 @@
         app:srcCompat="@drawable/logo" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_login"
+        style="@style/TITLE_STYLE_NORMAL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/layout_border"
+        android:backgroundTint="#80FFFFFF"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Button" />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_start"
         style="@style/TITLE_STYLE_NORMAL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below = "@id/btn_login"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/layout_border"
         android:backgroundTint="#80FFFFFF"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="Button" />
+
 </LinearLayout>

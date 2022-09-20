@@ -20,8 +20,8 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
-        <activity android:name=".StartActivity">
-        </activity>
+        <activity android:name=".StartActivity"></activity>
+        <activity android:name=".LoginActivity"></activity>
         <activity android:name=".SplashActivity"
             android:theme="@style/SplahTheme">
             <intent-filter>
