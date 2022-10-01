@@ -28,6 +28,7 @@ public class ProtectorActivity extends AppCompatActivity {
     private RelativeLayout layout_protector_info;
     private Button protector_modify;
     private SharedPreferences preferences;
+    private User user = User.getInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,16 +116,31 @@ public class ProtectorActivity extends AppCompatActivity {
 
         //protector_info 이름
         TextView protector_name = findViewById(R.id.txt_protector_info_name);
-        protector_name.setText(preferences.getString("protector_name","등록된 보호자가 없습니다"));
+        String pName;
+        if(user.getProtector_name() == null){
+            pName = "등록된 보호자가 없습니다";
+        }else{
+            pName = user.getProtector_name();
+        }
+        protector_name.setText(pName);
         protector_name.setTextSize(Dimension.SP, tSize);
 
         //protector_info 번호
         TextView protector_number = findViewById(R.id.txt_protector_info_number);
-        protector_number.setText(preferences.getString("protector_number","등록된 보호자가 없습니다"));
+        String pNum;
+        if(user.getProtector_number() == null){
+            pNum = "등록된 보호자가 없습니다";
+        }else{
+            pNum = user.getProtector_number();
+        }
+        protector_number.setText(pNum);
         protector_number.setTextSize(Dimension.SP, tSize);
 
         //수정 버튼
         protector_modify = findViewById(R.id.btn_protector_info);
+        if(user.getMy_role()){
+            protector_modify.setVisibility(View.GONE);
+        }
         protector_modify.setText("보호자 정보 수정");
         protector_modify.setTextSize(Dimension.SP, tSize);
     }

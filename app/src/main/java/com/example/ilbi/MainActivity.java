@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
     public static final int TEXT_SIZE_BIG = 28;
     private SharedPreferences preferences;
 
+    private User user = User.getInstance();
+
 
     @SuppressLint("InvalidWakeLockTag")
     @Override
@@ -129,31 +131,71 @@ public class MainActivity extends AppCompatActivity {
             tSize = TEXT_SIZE_BIG;
         }
 
+//        FirebaseDatabase database = FirebaseDatabase.getInstance("https://test-8bbfd-default-rtdb.asia-southeast1.firebasedatabase.app/");
+//        DatabaseReference isCameraOn = database.getReference("User");
+//
+//        //데베 리스너
+//        // Read from the database
+//        isCameraOn.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                String value = dataSnapshot.getValue(String.class);
+//                SharedPreferences.Editor editor = preferences.edit();
+//
+//                Log.d(TAG, "Value is: " + value);
+//
+//                switch(value){
+//                    case "ON":
+//                        Log.d(TAG, "카메라 ON");
+//                        editor.putBoolean("isCameraOn",true);
+//                        camera_layout(true, tSize);
+//                        break;
+//                    case "OFF":
+//                        Log.d(TAG, "카메라 OFF");
+//                        editor.putBoolean("isCameraOn",false);
+//                        camera_layout(false, tSize);
+//                        break;
+//                }
+//                editor.commit();
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Failed to read value
+//                Log.w(TAG, "Failed to read value.", error.toException());
+//            }
+//        });
+
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://test-8bbfd-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        DatabaseReference isCameraOn = database.getReference("isCameraOn");
+        DatabaseReference userRef = database.getReference("USER");
+        DatabaseReference myRef;
+
+        if(user.getMy_role()){
+            myRef = userRef.child(user.getMy_id()).child("INFO").child("Camera");
+        }else{
+            myRef = userRef.child(user.getPartner_id()).child("INFO").child("Camera");
+        }
 
         //데베 리스너
         // Read from the database
-        isCameraOn.addValueEventListener(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
                 String value = dataSnapshot.getValue(String.class);
                 SharedPreferences.Editor editor = preferences.edit();
-
-                Log.d(TAG, "Value is: " + value);
 
                 switch(value){
                     case "ON":
                         Log.d(TAG, "카메라 ON");
-                        editor.putBoolean("isCameraOn",true);
                         camera_layout(true, tSize);
+                        editor.putBoolean("isCameraOn",true);
                         break;
                     case "OFF":
                         Log.d(TAG, "카메라 OFF");
-                        editor.putBoolean("isCameraOn",false);
                         camera_layout(false, tSize);
+                        editor.putBoolean("isCameraOn",false);
                         break;
                 }
                 editor.commit();
@@ -167,25 +209,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         st_camera = findViewById(R.id.switch_fall);
         st_camera.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SharedPreferences.Editor editor = preferences.edit();
-
                 if(isChecked){
-                    isCameraOn.setValue("ON");
+                    myRef.setValue("ON");
 
                 }else{
-                    isCameraOn.setValue("OFF");
+                    myRef.setValue("OFF");
 
                 }
-
-
-
             }
-
 
         });
 
@@ -244,11 +279,10 @@ public class MainActivity extends AppCompatActivity {
                             format.setTimeZone(tz);
                             Date current_time = new Date();
                             Log.d(TAG, format.format(current_time));
-                            SharedPreferences preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
-                            String msg = format.format(current_time)+" "+preferences.getString("senior_address","") + "에서 낙상 사고를 감지했습니다. ";
-
-
-                            smsManager.sendTextMessage(preferences.getString("protector_number","0"),null,msg,null,null);
+                            //SharedPreferences preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+                            String msg = format.format(current_time)+" "+user.getSenior_address() + "에서 낙상 사고를 감지했습니다. ";
+                            Log.d(TAG, "protector num: " + user.getProtector_number());
+                            smsManager.sendTextMessage(user.getProtector_number(),null, msg,null,null);
                             Toast.makeText(MainActivity.this,"전송에 성공했습니다.",Toast.LENGTH_SHORT).show();
                         }catch(Exception e){
                             Toast.makeText(MainActivity.this,"전송에 실패하였습니다.",Toast.LENGTH_SHORT).show();
@@ -339,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
 
         //fall 스위치
         Switch fall_switch = findViewById(R.id.switch_fall);
-        if(preferences.getString("role","").equals("Senior")) {
+        if(user.getMy_role()) {
             RelativeLayout.LayoutParams fall_switch_pr = (RelativeLayout.LayoutParams) fall_switch.getLayoutParams();
             fall_switch_pr.width = 320;
             fall_switch_pr.height = 40;

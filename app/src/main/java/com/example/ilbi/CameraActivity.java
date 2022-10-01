@@ -31,6 +31,8 @@ public class CameraActivity extends AppCompatActivity {
     private RelativeLayout layout_phonecall;
     private RelativeLayout layout_guide;
     private SharedPreferences preferences;
+    private User user = User.getInstance();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +46,7 @@ public class CameraActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(CameraActivity.this,"전화걸기",Toast.LENGTH_SHORT).show();
-                SharedPreferences preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
-                String number = preferences.getString("senior_number","abc");
+                String number = user.getSenior_number();
 
                 Intent it = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
                 startActivity(it);
@@ -86,7 +87,6 @@ public class CameraActivity extends AppCompatActivity {
         }else{
             tSize = MainActivity.TEXT_SIZE_BIG;
         }
-        String role = preferences.getString("role","");
 
         //기기 해상도 정보 가져오기
         DisplayMetrics metrics = new DisplayMetrics();
@@ -112,7 +112,7 @@ public class CameraActivity extends AppCompatActivity {
         int margin_inside = metrics.widthPixels / 100 * 2;
         phonecall_img_pr.setMarginEnd(margin_inside);
 
-        if(role.equals("Protector")){
+        if(!user.getMy_role()){
             //phonecall 타이틀 텍스트 뷰
             TextView phonecall_title = findViewById(R.id.txt_phonecall_title);
             phonecall_title.setText("통화");
@@ -120,7 +120,7 @@ public class CameraActivity extends AppCompatActivity {
 
             //phonecall 내용 텍스트 뷰
             TextView phonecall_content = findViewById(R.id.txt_phonecall_content);
-            phonecall_content.setText(preferences.getString("senior_name",""));
+            phonecall_content.setText(user.getSenior_name());
             phonecall_content.setTextSize(Dimension.SP, tSize);
 
             //guide 뷰 패딩 설정
@@ -157,7 +157,8 @@ public class CameraActivity extends AppCompatActivity {
         webSettings.setBuiltInZoomControls(true);
         webSettings.setSupportZoom(true);
 
-        wb_camera.loadUrl("http://"+preferences.getString("camera_ip",null)+":9999/?action=stream");
+        //http://172.20.10.17:8080
+        wb_camera.loadUrl("http://"+user.getIp()+":8080");
 
         //카메라 켜져있는지 확인
         boolean isCameraOn = preferences.getBoolean("isCameraOn",false);
@@ -165,7 +166,7 @@ public class CameraActivity extends AppCompatActivity {
         camera_on_off.setTextSize(Dimension.SP, tSize);
 
         if(!isCameraOn){
-            wb_camera.setVisibility(View.INVISIBLE);
+            wb_camera.setVisibility(View.GONE);
             camera_on_off.setText("카메라가 꺼져 있습니다");
         }else{
             wb_camera.setVisibility(View.VISIBLE);

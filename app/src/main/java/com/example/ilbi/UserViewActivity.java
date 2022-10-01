@@ -33,6 +33,7 @@ public class UserViewActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private Button user_modify;
     private Button reset;
+    private User user = User.getInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -133,11 +134,23 @@ public class UserViewActivity extends AppCompatActivity {
 
         //user 내용 텍스트 뷰
         TextView user_content = findViewById(R.id.txt_user_name);
-        user_content.setText(preferences.getString("senior_name","등록된 이름이 없습니다."));
+        String sName;
+        if(user.getSenior_name() ==  null){
+            sName = "등록된 이름이 없습니다.";
+        }else{
+            sName = user.getSenior_name();
+        }
+        user_content.setText(sName);
         user_content.setTextSize(Dimension.SP, tSize);
 
         TextView user_number = findViewById(R.id.txt_user_number);
-        user_number.setText(preferences.getString("senior_number","등록된 번호가 없습니다."));
+        String sNum;
+        if(user.getSenior_number() ==  null){
+            sNum = "등록된 번호가 없습니다.";
+        }else{
+            sNum = user.getSenior_number();
+        }
+        user_number.setText(sNum);
         user_number.setTextSize(Dimension.SP, tSize);
 
         //address 뷰 패딩 설정
@@ -150,7 +163,13 @@ public class UserViewActivity extends AppCompatActivity {
 
         //address 내용 텍스트 뷰
         TextView address_content = findViewById(R.id.txt_address_content);
-        address_content.setText(preferences.getString("senior_address","등록된 주소가 없습니다."));
+        String address;
+        if(user.getSenior_address() ==  null){
+            address = "등록된 주소가 없습니다.";
+        }else{
+            address = user.getSenior_address();
+        }
+        address_content.setText(address);
         address_content.setTextSize(Dimension.SP, tSize);
 
         //ip
@@ -160,7 +179,13 @@ public class UserViewActivity extends AppCompatActivity {
 
         //address 내용 텍스트 뷰
         TextView ip_content = findViewById(R.id.txt_ip_content_usr);
-        ip_content.setText(preferences.getString("camera_ip","등록된 ip주소가 없습니다."));
+        String ip;
+        if(user.getSenior_name() ==  null){
+            ip = "등록된 ip주소가 없습니다.";
+        }else{
+            ip = user.getIp();
+        }
+        ip_content.setText(ip);
         ip_content.setTextSize(Dimension.SP, tSize);
 
         //글씨 크기 뷰
@@ -177,6 +202,9 @@ public class UserViewActivity extends AppCompatActivity {
         font_size_content.setTextSize(Dimension.SP, tSize);
 
         //수정 버튼
+        if(!user.getMy_role()){
+            user_modify.setVisibility(View.GONE);
+        }
         user_modify.setText("수정");
         user_modify.setTextSize(Dimension.SP, tSize);
 

@@ -32,14 +32,14 @@
             android:paddingEnd="30dp">
 
             <TextView
-                android:id="@+id/txt_name_gn"
+                android:id="@+id/txt_id_gn"
                 style="@style/TITLE_STYLE_NORMAL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
 
             <EditText
-                android:id="@+id/edit_name_gn"
+                android:id="@+id/edit_id_gn"
                 style="@style/CONTENT_STYLE_NORMAL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,20 +48,20 @@
                 android:inputType="textPersonName" />
 
             <TextView
-                android:id="@+id/txt_number_gn"
+                android:id="@+id/txt_password_gn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/TITLE_STYLE_NORMAL"
                 android:text="TextView" />
 
             <EditText
-                android:id="@+id/edit_number_gn"
+                android:id="@+id/edit_password_gn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/CONTENT_STYLE_NORMAL"
                 android:ems="12"
                 android:layout_marginBottom="30dp"
-                android:inputType="phone" />
+                android:inputType="textPassword"  />
 
             <TextView
                 android:id="@+id/txt_title_role"
@@ -102,56 +102,6 @@
                     android:text="RadioButton" />
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/txt_ip_title_gn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/TITLE_STYLE_NORMAL"
-                android:text="TextView" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="30dp">
-
-                <EditText
-                    android:id="@+id/edit_ip1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="number"
-
-                    android:maxLength="3" />
-
-                <EditText
-                    android:id="@+id/edit_ip2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:maxLength="3"
-                    android:inputType="number" />
-
-                <EditText
-                    android:id="@+id/edit_ip3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:maxLength="3"
-                    android:inputType="number" />
-
-                <EditText
-                    android:id="@+id/edit_ip4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:maxLength="3"
-                    android:ems="10"
-                    android:inputType="number" />
-            </LinearLayout>
 
             <Button
                 android:id="@+id/btn_start_gn"

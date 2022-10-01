@@ -23,6 +23,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
+
 public class StartSeniorActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Button submit_btn;
@@ -38,6 +40,10 @@ public class StartSeniorActivity extends AppCompatActivity {
 
         toolbarInit();
 
+        EditText ip1 = findViewById(R.id.edit_ip1);
+        EditText ip2 = findViewById(R.id.edit_ip2);
+        EditText ip3 = findViewById(R.id.edit_ip3);
+        EditText ip4 = findViewById(R.id.edit_ip4);
 
         address_edit = findViewById(R.id.edit_address);
         pt_name_edit = findViewById(R.id.edit_pt_name);
@@ -51,29 +57,69 @@ public class StartSeniorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String address = address_edit.getText().toString();
-                String pt_name = pt_name_edit.getText().toString();
-                String pt_number = pt_number_edit.getText().toString();
+                String sn_name = pt_name_edit.getText().toString();
+                String sn_number = pt_number_edit.getText().toString();
+                User user = User.getInstance();
                 SharedPreferences.Editor editor = preferences.edit();
                 Intent intent;
 
-                if(address.length() == 0 || pt_name.length() == 0 || pt_number.length() == 0){
+                ArrayList<String> ip = new ArrayList<String>(4);
+                ip.add(ip1.getText().toString());
+                ip.add(ip2.getText().toString());
+                ip.add(ip3.getText().toString());
+                ip.add(ip4.getText().toString());
+
+                if(address.length() == 0 || sn_name.length() == 0 || sn_number.length() == 0){
                     Toast.makeText(StartSeniorActivity.this,"입력하지 않은 부분이 있습니다.",Toast.LENGTH_SHORT).show();
                     return;
                 }else{
-                    editor.putString("senior_address", address);
-                    editor.putString("protector_name", pt_name);
-                    editor.putString("protector_number", pt_number);
-                    intent = new Intent(StartSeniorActivity.this, MainActivity.class);
-                    editor.putBoolean("isFirst", false);
-                    editor.commit();
+//                    editor.putString("senior_address", address);
+//                    editor.putString("protector_name", pt_name);
+//                    editor.putString("protector_number", pt_number);
+
+                    //new
+                    user.setSenior_name(sn_name);
+                    user.setSenior_number(sn_number);
+                    user.setSenior_address(address);
+
+                    intent = new Intent(StartSeniorActivity.this, ConnectActivity.class);
+//                    editor.putBoolean("isFirst", false);
+//                    editor.commit();
                 }
 
-                Log.d(TAG, "senior_name: " + preferences.getString("senior_name",""));
-                Log.d(TAG, "senior_number: " + preferences.getString("senior_number",""));
-                Log.d(TAG, "protector_name: " + preferences.getString("protector_name",""));
-                Log.d(TAG, "protector_number: " + preferences.getString("protector_number",""));
-                Log.d(TAG, "protector_number: " + preferences.getString("senior_address",""));
-                Log.d(TAG, "isFirst: " + preferences.getBoolean("isFirst",true));
+                String camera_ip = "";
+
+                for(int i = 0; i < 4 ; i++){
+                    if(ip.get(i).length() == 0){
+                        Toast.makeText(StartSeniorActivity.this,"올바른 ip를 입력해주세요",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    camera_ip = camera_ip.concat(ip.get(i));
+                    camera_ip = camera_ip.concat(".");
+                }
+                camera_ip = camera_ip.substring(0, camera_ip.length() - 1);
+                //new
+                user.setIp(camera_ip);
+               // editor.putString("camera_ip",camera_ip);
+
+
+//                Log.d(TAG, "senior_name: " + preferences.getString("senior_name",""));
+//                Log.d(TAG, "senior_number: " + preferences.getString("senior_number",""));
+//                Log.d(TAG, "protector_name: " + preferences.getString("protector_name",""));
+//                Log.d(TAG, "protector_number: " + preferences.getString("protector_number",""));
+//                Log.d(TAG, "protector_number: " + preferences.getString("senior_address",""));
+//                Log.d(TAG, "isFirst: " + preferences.getBoolean("isFirst",true));
+
+                Log.d(TAG, "id: "+ user.getMy_id());
+                Log.d(TAG, "pw: "+ user.getMy_password());
+                Log.d(TAG, "isSenior: "+ user.getMy_role());
+                Log.d(TAG, "sn_name: "+user.getSenior_name());
+                Log.d(TAG, "sn_number: " + user.getSenior_number());
+                Log.d(TAG, "address"+user.getSenior_address());
+                Log.d(TAG, "ip: "+user.getIp());
+
+                //데베에 입력
+                user.signUP();
 
                 Toast.makeText(StartSeniorActivity.this, "완료", Toast.LENGTH_SHORT).show();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -119,20 +165,26 @@ public class StartSeniorActivity extends AppCompatActivity {
         view_main.setPadding(padding_outside, padding_outside, padding_outside, padding_outside);
 
         TextView address_txt = findViewById(R.id.txt_address);
-        address_txt.setText("당신의 주소");
+        address_txt.setText("주소");
 
 
         address_edit.setHint("주소를 입력하세요");
 
         TextView pt_name_txt = findViewById(R.id.txt_pt_name);
-        pt_name_txt.setText("보호자의 이름");
+        pt_name_txt.setText("이름");
 
-        pt_name_edit.setHint("보호자의 이름을 입력하세요");
+        pt_name_edit.setHint("이름을 입력하세요");
 
         TextView pt_number_txt = findViewById(R.id.txt_pt_number);
-        pt_number_txt.setText("보호자의 번호");
+        pt_number_txt.setText("번호");
 
-        pt_number_edit.setHint("보호자의 번호를 입력하세요");
+        pt_number_edit.setHint("번호를 입력하세요");
+
+
+        TextView ip_title = findViewById(R.id.txt_ip_title_gn);
+        ip_title.setText("낙상감지 시스템의 ip주소");
+
+
 
         submit_btn.setText("완료");
 

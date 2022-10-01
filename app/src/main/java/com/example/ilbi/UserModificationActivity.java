@@ -24,6 +24,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class UserModificationActivity extends AppCompatActivity {
@@ -39,6 +42,9 @@ public class UserModificationActivity extends AppCompatActivity {
     private EditText ip2;
     private EditText ip3;
     private EditText ip4;
+
+    private FirebaseDatabase database;
+    private User user = User.getInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,9 +80,20 @@ public class UserModificationActivity extends AppCompatActivity {
                 ip.add(ip3.getText().toString());
                 ip.add(ip4.getText().toString());
 
-                editor.putString("senior_name", name);
-                editor.putString("senior_number", number);
-                editor.putString("senior_address", address);
+
+//                editor.putString("senior_name", name);
+//                editor.putString("senior_number", number);
+//                editor.putString("senior_address", address);
+
+                database = FirebaseDatabase.getInstance("https://test-8bbfd-default-rtdb.asia-southeast1.firebasedatabase.app/");
+                DatabaseReference myRef = database.getReference("USER");
+
+                myRef.child(user.getMy_id()).child("INFO").child("Name").setValue(name);
+                user.setSenior_name(name);
+                myRef.child(user.getMy_id()).child("INFO").child("Number").setValue(number);
+                user.setSenior_number(number);
+                myRef.child(user.getMy_id()).child("INFO").child("Address").setValue(address);
+                user.setSenior_address(address);
 
                 if(rb_normal.isChecked()){
                     editor.putBoolean("isNormal",true);
@@ -97,7 +114,10 @@ public class UserModificationActivity extends AppCompatActivity {
                     camera_ip = camera_ip.concat(".");
                 }
                 camera_ip = camera_ip.substring(0, camera_ip.length() - 1);
-                editor.putString("camera_ip",camera_ip);
+                //editor.putString("camera_ip",camera_ip);
+
+                myRef.child(user.getMy_id()).child("INFO").child("IP").setValue(camera_ip);
+                user.setIp(camera_ip);
 
                 editor.commit();
 
@@ -173,11 +193,23 @@ public class UserModificationActivity extends AppCompatActivity {
         user_title.setTextSize(Dimension.SP, tSize);
 
         //protector_info 이름
-        user_name.setText(preferences.getString("senior_name","등록된 피보호자가 없습니다"));
+        String sName;
+        if(user.getSenior_name() ==  null){
+            sName = "등록된 이름이 없습니다.";
+        }else{
+            sName = user.getSenior_name();
+        }
+        user_name.setText(sName);
         user_name.setTextSize(Dimension.SP, tSize);
 
         //protector_info 번호
-        user_number.setText(preferences.getString("senior_number","등록된 번호가 없습니다"));
+        String sNum;
+        if(user.getSenior_number() ==  null){
+            sNum = "등록된 번호가 없습니다.";
+        }else{
+            sNum = user.getSenior_number();
+        }
+        user_number.setText(sNum);
         user_number.setTextSize(Dimension.SP, tSize);
         //주소 뷰 패딩 설정
 
@@ -186,7 +218,13 @@ public class UserModificationActivity extends AppCompatActivity {
         address_title.setText("주소");
         address_title.setTextSize(Dimension.SP, tSize);
 
-        user_address.setText(preferences.getString("senior_address","등록된 주소가 없습니다"));
+        String address;
+        if(user.getSenior_address() ==  null){
+            address = "등록된 주소가 없습니다.";
+        }else{
+            address = user.getSenior_address();
+        }
+        user_address.setText(address);
         user_address.setTextSize(Dimension.SP, tSize);
 
         //ip
@@ -194,7 +232,7 @@ public class UserModificationActivity extends AppCompatActivity {
         ip_title.setText("카메라 ip 주소");
         ip_title.setTextSize(Dimension.SP, tSize);
 
-        String ip_address = preferences.getString("camera_ip","null");
+        String ip_address = user.getIp();
         String[] ip = ip_address.split("\\.");
 
         ip1.setText(ip[0]);

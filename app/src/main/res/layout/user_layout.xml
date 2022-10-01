@@ -161,7 +161,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/layout_border"
                     android:backgroundTint="#8BCD69"
-                    android:text="초기화" />
+                    android:text="로그아웃" />
 
             </LinearLayout>
         </ScrollView>

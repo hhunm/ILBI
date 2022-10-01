@@ -45,6 +45,7 @@ public class TimerNotificationService extends JobIntentService {
     public static boolean delete = false;
     public static String byWho = "";
     private FirebaseDatabase database;
+    private User user = User.getInstance();
     private int progress;
 
     static void enqueueWork(Context context, Intent work){
@@ -63,7 +64,7 @@ public class TimerNotificationService extends JobIntentService {
             notificationManager.createNotificationChannel(new NotificationChannel("NOTIFICATION_TIMER", "timer_channel", importance));
         }
 
-        Intent Mintent = new Intent(this, MainActivity.class);
+        Intent Mintent = new Intent(this, SplashActivity.class);
         Mintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent contentIntent = PendingIntent.getActivity(
                 this, 0, Mintent,PendingIntent.FLAG_CANCEL_CURRENT);
@@ -124,12 +125,13 @@ public class TimerNotificationService extends JobIntentService {
 
         //2022-08-02
         database = FirebaseDatabase.getInstance("https://test-8bbfd-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        DatabaseReference isReport = database.getReference("isReport");
+        DatabaseReference isReport = database.getReference("USER");
 
-        isReport.setValue("ACTIVATED");
+        isReport.child(preferences.getString("senior_id","")).child("INFO").child("isReport").setValue("ACTIVATED");
+        Log.d(TAG, "SharedPreference: " + preferences.getString("senior_id",""));
 
         // Read from the database
-        isReport.addValueEventListener(new ValueEventListener() {
+        isReport.child(preferences.getString("senior_id","")).child("INFO").child("isReport").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -194,11 +196,12 @@ public class TimerNotificationService extends JobIntentService {
                                 format.setTimeZone(tz);
                                 Date current_time = new Date();
 
-                                DatabaseReference reportRef = database.getReference("RECORD");
+                                DatabaseReference reportRef = database.getReference("USER");
                                 String key = reportRef.push().getKey();
                                 Record rc = new Record(format.format(current_time), false, byWho);
                                 Map<String, Object> childUpdates = new HashMap<>();
-                                childUpdates.put("/record/" + key, rc.recordToMap());
+                                //childUpdates.put("/record/" + key, rc.recordToMap());
+                                childUpdates.put("/" + preferences.getString("senior_id","")+ "/RECORD/" + key, rc.recordToMap());
                                 reportRef.updateChildren(childUpdates);
                             }
                             stopForeground(true);
@@ -246,11 +249,13 @@ public class TimerNotificationService extends JobIntentService {
                                     smsManager.sendTextMessage(preferences.getString("protector_number","0"),null,msg,null,null);
 
                                     //2022.08.23 데베에 기록 추가
-                                    DatabaseReference reportRef = database.getReference("RECORD");
+                                    DatabaseReference reportRef = database.getReference("USER");
                                     String key = reportRef.push().getKey();
                                     Record rc = new Record(format.format(current_time), true, byWho);
                                     Map<String, Object> childUpdates = new HashMap<>();
-                                    childUpdates.put("/record/"+key, rc.recordToMap());
+                                    //childUpdates.put("/record/"+key, rc.recordToMap());
+                                    childUpdates.put("/" + preferences.getString("senior_id","")+ "/RECORD/" + key, rc.recordToMap());
+
                                     reportRef.updateChildren(childUpdates);
 
                                 }catch(Exception e){
@@ -260,7 +265,7 @@ public class TimerNotificationService extends JobIntentService {
                             }
 
                             while(true){
-                                Log.d(TAG,"waiting");
+                                //Log.d(TAG,"waiting");
                                 if(delete){
                                     Log.d(TAG,"delete");
                                     stopForeground(true);

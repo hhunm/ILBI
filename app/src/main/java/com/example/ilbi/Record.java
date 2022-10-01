@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Record {
+public class Record implements Comparable<Record> {
     private String date_time;
     private boolean isReported;
     private String byWho;
@@ -57,4 +57,8 @@ public class Record {
         return result;
     }
 
+    @Override
+    public int compareTo(Record o) {
+        return date_time.compareTo(o.date_time);
+    }
 }

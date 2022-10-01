@@ -3,6 +3,7 @@ package com.example.ilbi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -16,11 +17,11 @@ public class ReportReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         TimerNotificationService.report = true;
-
+        SharedPreferences preferences = context.getSharedPreferences("UserInfo", context.MODE_PRIVATE);
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://test-8bbfd-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        DatabaseReference isReport = database.getReference("isReport");
+        DatabaseReference isReport = database.getReference("USER");
 
-        isReport.setValue("REPORT");
+        isReport.child(preferences.getString("senior_id","")).child("INFO").child("isReport").setValue("REPORT");
 
     }
 }

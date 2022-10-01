@@ -29,9 +29,11 @@ public class CancelReceiver extends BroadcastReceiver {
         TimerNotificationService.stop = true;
 //        Log.d(TAG, Boolean.toString(TimerNotificationService.stop));
 
+        SharedPreferences preferences = context.getSharedPreferences("UserInfo", context.MODE_PRIVATE);
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://test-8bbfd-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        DatabaseReference isReport = database.getReference("isReport");
-        isReport.setValue("CANCEL");
+        DatabaseReference isReport = database.getReference("USER");
+
+        isReport.child(preferences.getString("senior_id","")).child("INFO").child("isReport").setValue("CANCEL");
 
 
     }

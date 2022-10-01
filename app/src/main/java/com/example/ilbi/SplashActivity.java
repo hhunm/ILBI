@@ -31,27 +31,30 @@ public class SplashActivity extends AppCompatActivity {
 //        editor.putBoolean("isFirst", true);
 //        editor.commit();
 
-        boolean first = pref.getBoolean("isFirst", true);
+//        boolean first = pref.getBoolean("isFirst", true);
+        boolean isLogin = pref.getBoolean("isLogin", false);
+        Log.d(TAG, "isLogin: "+ isLogin);
 
-        Log.d(TAG, "first: "+ first);
-
-        if(first){
+        if(!isLogin){
             Log.d(TAG, "first");
             Intent intent = new Intent(getApplicationContext(), StartActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
 
-            FirebaseDatabase database = FirebaseDatabase.getInstance("https://test-8bbfd-default-rtdb.asia-southeast1.firebasedatabase.app/");
-            DatabaseReference isCameraOn = database.getReference("isCameraOn");
-            isCameraOn.setValue("OFF");
+//            FirebaseDatabase database = FirebaseDatabase.getInstance("https://test-8bbfd-default-rtdb.asia-southeast1.firebasedatabase.app/");
+//            DatabaseReference isCameraOn = database.getReference("isCameraOn");
+//            isCameraOn.setValue("OFF");
 
         }
         else{
-            Log.d(TAG, "not first");
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            Log.d(TAG, "Login");
+            User user = User.getInstance();
+            user.setMy_id(pref.getString("my_id",""));
+            user.userInit(getApplicationContext(),new Intent(getApplicationContext(), MainActivity.class));
+//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(intent);
         }
-        finish();
+        //finish();
     }
 }

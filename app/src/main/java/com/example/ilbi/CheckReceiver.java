@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -15,9 +16,10 @@ public class CheckReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent camera_intent = new Intent(context.getApplicationContext(), CameraActivity.class);
-        camera_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.getApplicationContext().startActivity(camera_intent);
+        User user = User.getInstance();
+        SharedPreferences preferences = context.getSharedPreferences("UserInfo", context.MODE_PRIVATE);
+        user.setMy_id(preferences.getString("my_id",""));
+        user.userInit(context.getApplicationContext(), new Intent(context.getApplicationContext(), CameraActivity.class));
 
 //        if(intent.getExtras().getInt("requestCode",-1) == 1){
 //            NotificationManager notificationManager = (NotificationManager) context.getSystemService((String) TimerNotificationService);

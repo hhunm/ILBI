@@ -1,6 +1,7 @@
 package com.example.ilbi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
@@ -11,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,11 +31,23 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login_layout);
         toolbarInit();
 
-
         edt_id = findViewById(R.id.edt_login_id);
         edt_password = findViewById(R.id.edt_login_password);
         btn_login = findViewById(R.id.btn_login_login);
         layout_init();
+
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String id = edt_id.getText().toString();
+                String password = edt_password.getText().toString();
+
+                //
+                User user = User.getInstance();
+                user.login(id, password, getApplicationContext());
+
+            }
+        });
 
     }
 

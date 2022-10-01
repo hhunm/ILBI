@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -46,12 +48,15 @@ public class RecordActivity extends AppCompatActivity {
         //리스트뷰
         listView = findViewById(R.id.list_record);
         rc = new ArrayList();
+        SharedPreferences preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
 
 
         database = FirebaseDatabase.getInstance("https://test-8bbfd-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        DatabaseReference reportRef = database.getReference("RECORD");
+        //DatabaseReference reportRef = database.getReference("RECORD");
+        DatabaseReference reportRef = database.getReference("USER");
+        Log.d(TAG, "Shared Preference | senior_id: " + preferences.getString("senior_id",""));
 
-        reportRef.child("record").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        reportRef.child(preferences.getString("senior_id","")).child("RECORD").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (!task.isSuccessful()) {
@@ -61,15 +66,20 @@ public class RecordActivity extends AppCompatActivity {
                     Log.d(TAG, String.valueOf(task.getResult().getValue()));
 
                     Map<String,Map> m = (Map) task.getResult().getValue();
+
+                    if(m == null){
+                        return;
+                    }
+
                     Iterator<String> it = m.keySet().iterator();
                     while(it.hasNext()){
                         String key = it.next();
                         Log.d(TAG,"key: "+key);
                         Record r = new Record();
                         rc.add(r.mapToRecord(m.get(key)).toString());
-                        Log.d(TAG,"map: "+m.get(key));
-
+                        Log.d(TAG,"map: "+ m.get(key));
                     }
+                    Collections.sort(rc);
                     setView();
                 }
             }
@@ -79,10 +89,12 @@ public class RecordActivity extends AppCompatActivity {
 
 
     }
+
     private void setView(){
         preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
         boolean isNormal = preferences.getBoolean("isNormal",true);
         ArrayAdapter<String> adapter;
+
         if(isNormal){
             adapter = new ArrayAdapter<String>(this,R.layout.list_item_normal,R.id.textView_normal, rc);
         }else{

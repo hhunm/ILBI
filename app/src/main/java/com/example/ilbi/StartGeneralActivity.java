@@ -22,9 +22,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class StartGeneralActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Button next_btn;
@@ -42,49 +39,54 @@ public class StartGeneralActivity extends AppCompatActivity {
         toolbarInit();
         layout_init();
 
-        edit_name = findViewById(R.id.edit_name_gn);
-        edit_number = findViewById(R.id.edit_number_gn);
+        edit_name = findViewById(R.id.edit_id_gn);
+        edit_number = findViewById(R.id.edit_password_gn);
         rb_senior = findViewById(R.id.rbtn_senior);
         rb_protector = findViewById(R.id.rbtn_protector);
-        EditText ip1 = findViewById(R.id.edit_ip1);
-        EditText ip2 = findViewById(R.id.edit_ip2);
-        EditText ip3 = findViewById(R.id.edit_ip3);
-        EditText ip4 = findViewById(R.id.edit_ip4);
+
         SharedPreferences preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
 
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = edit_name.getText().toString();
-                String number = edit_number.getText().toString();
+                String id = edit_name.getText().toString();
+                String password = edit_number.getText().toString();
                 String role = null;
-                SharedPreferences.Editor editor = preferences.edit();
-                ArrayList<String> ip = new ArrayList<String>(4);
-                ip.add(ip1.getText().toString());
-                ip.add(ip2.getText().toString());
-                ip.add(ip3.getText().toString());
-                ip.add(ip4.getText().toString());
+                User user = User.getInstance();
 
+                SharedPreferences.Editor editor = preferences.edit();
 
                 Intent intent;
 
-                if(name.length() == 0 || number.length() == 0){
+                if(id.length() == 0 || password.length() == 0){
                     Toast.makeText(StartGeneralActivity.this,"입력하지 않은 부분이 있습니다.",Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+
+                //new
+                user.setMy_id(id);
+                user.setMy_password(password);
+
                 if(rb_senior.isChecked()){
-                    role = "Senior";
-                    editor.putString("senior_name", name);
-                    editor.putString("senior_number", number);
-                    editor.putString("role", role);
+//                    role = "Senior";
+//                    editor.putString("senior_name", id);
+//                    editor.putString("senior_number", password);
+//                    editor.putString("role", role);
+
+
+                    user.setMy_role(true);
                     intent = new Intent(StartGeneralActivity.this, StartSeniorActivity.class);
 
                 }else if(rb_protector.isChecked()){
-                    role = "Protector";
-                    editor.putString("protector_name", name);
-                    editor.putString("protector_number", number);
-                    editor.putString("role", role);
+//                    role = "Protector";
+//                    editor.putString("protector_name", id);
+//                    editor.putString("protector_number", password);
+//                    editor.putString("role", role);
+
+                    //new
+                    user.setMy_role(false);
+
                     intent = new Intent(StartGeneralActivity.this, StartProtectorActivity.class);
 
                 }else{
@@ -92,29 +94,19 @@ public class StartGeneralActivity extends AppCompatActivity {
                     return;
                 }
 
-                String camera_ip = "";
+                Log.d(TAG, "id: "+ user.getMy_id());
+                Log.d(TAG, "pw: "+ user.getMy_password());
+                Log.d(TAG, "isSenior: "+ user.getMy_role());
+//
+//                editor.commit();
+//
+//                Log.d(TAG, "senior_name: " + preferences.getString("senior_name",""));
+//                Log.d(TAG, "senior_number: " + preferences.getString("senior_number",""));
+//                Log.d(TAG, "protector_name: " + preferences.getString("protector_name",""));
+//                Log.d(TAG, "protector_number: " + preferences.getString("protector_number",""));
+//                Log.d(TAG, "camera_ip: " + preferences.getString("camera_ip",""));
 
-                for(int i = 0; i < 4 ; i++){
-                    if(ip.get(i).length() == 0){
-                        Toast.makeText(StartGeneralActivity.this,"올바른 ip를 입력해주세요",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    camera_ip = camera_ip.concat(ip.get(i));
-                    camera_ip = camera_ip.concat(".");
-                }
-                camera_ip = camera_ip.substring(0, camera_ip.length() - 1);
-                editor.putString("camera_ip",camera_ip);
-
-                editor.commit();
-
-                Log.d(TAG, "senior_name: " + preferences.getString("senior_name",""));
-                Log.d(TAG, "senior_number: " + preferences.getString("senior_number",""));
-                Log.d(TAG, "protector_name: " + preferences.getString("protector_name",""));
-                Log.d(TAG, "protector_number: " + preferences.getString("protector_number",""));
-                Log.d(TAG, "camera_ip: " + preferences.getString("camera_ip",""));
-
-                startActivity(intent);
-
+                user.checkIdDuplicated(id, getApplicationContext(), intent);
             }
         });
 
@@ -155,17 +147,17 @@ public class StartGeneralActivity extends AppCompatActivity {
         int padding_outside= metrics.heightPixels / 100 * 2;
         view_main.setPadding(padding_outside, padding_outside, padding_outside, padding_outside);
 
-        TextView name_txt = findViewById(R.id.txt_name_gn);
-        name_txt.setText("이름");
+        TextView name_txt = findViewById(R.id.txt_id_gn);
+        name_txt.setText("아이디");
 
-        EditText name_edit = findViewById(R.id.edit_name_gn);
-        name_edit.setHint("이름을 입력하세요");
+        EditText name_edit = findViewById(R.id.edit_id_gn);
+        name_edit.setHint("아이디을 입력하세요");
 
-        TextView number_txt = findViewById(R.id.txt_number_gn);
-        number_txt.setText("번호");
+        TextView number_txt = findViewById(R.id.txt_password_gn);
+        number_txt.setText("비밀번호");
 
-        EditText number_edit = findViewById(R.id.edit_number_gn);
-        number_edit.setHint("번호를 입력하세요");
+        EditText number_edit = findViewById(R.id.edit_password_gn);
+        number_edit.setHint("비밀번호를 입력하세요");
 
         TextView role_title = findViewById(R.id.txt_title_role);
         role_title.setText("역할");
@@ -178,9 +170,6 @@ public class StartGeneralActivity extends AppCompatActivity {
 
         RadioButton senior_rbtn = findViewById(R.id.rbtn_senior);
         senior_rbtn.setText("피보호자");
-
-        TextView ip_title = findViewById(R.id.txt_ip_title_gn);
-        ip_title.setText("낙상감지 시스템의 ip주소");
 
         next_btn = findViewById(R.id.btn_start_gn);
         next_btn.setText("다음");

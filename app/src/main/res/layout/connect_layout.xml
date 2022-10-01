@@ -12,14 +12,14 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <LinearLayout
-        android:id="@+id/view_start_pt"
+        android:id="@+id/view_connect"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="#DFDFDF">
 
         <LinearLayout
-            android:id="@+id/layout_start_pt"
+            android:id="@+id/layout_connect"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/layout_border"
@@ -30,41 +30,56 @@
             android:paddingEnd="30dp">
 
             <TextView
-                android:id="@+id/txt_sn_name"
+                android:id="@+id/txt_connect_outline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                style = "@style/TITLE_STYLE_NORMAL"/>
-
-            <EditText
-                android:id="@+id/edit_sn_name"
-                style="@style/CONTENT_STYLE_NORMAL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:ems="12"
-                android:inputType="textPersonName" />
+                style = "@style/CONTENT_STYLE_NORMAL"
+                android:text="TextView" />
 
             <TextView
-                android:id="@+id/txt_sn_number"
+                android:id="@+id/txt_connect_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                style = "@style/TITLE_STYLE_NORMAL"/>
+                style = "@style/TITLE_STYLE_NORMAL"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/txt_my_token"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_marginBottom="30dp"
+                style="@style/CONTENT_STYLE_NORMAL" />
+
+            <TextView
+                android:id="@+id/txt_connect_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style = "@style/TITLE_STYLE_NORMAL"
+                android:text="TextView" />
 
             <EditText
-                android:id="@+id/edit_sn_number"
-                style="@style/CONTENT_STYLE_NORMAL"
+                android:id="@+id/edt_connect_token"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
                 android:layout_marginBottom="30dp"
-                android:inputType="phone" />
+                style="@style/CONTENT_STYLE_NORMAL"/>
 
             <Button
-                android:id="@+id/btn_pt_submit"
-                style="@style/TITLE_STYLE_NORMAL"
+                android:id="@+id/btn_connect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/TITLE_STYLE_NORMAL"
+                android:backgroundTint="#8BCD69"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/btn_connect2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TITLE_STYLE_NORMAL"
                 android:backgroundTint="#8BCD69"
                 android:text="Button" />
         </LinearLayout>

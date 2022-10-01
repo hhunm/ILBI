@@ -33,6 +33,7 @@
         <activity android:name=".StartGeneralActivity"></activity>
         <activity android:name=".StartSeniorActivity"></activity>
         <activity android:name=".StartProtectorActivity"></activity>
+        <activity android:name=".ConnectActivity"></activity>
         <activity android:name=".MainActivity">
 
         </activity>

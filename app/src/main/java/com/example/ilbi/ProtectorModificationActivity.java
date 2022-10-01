@@ -23,6 +23,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class ProtectorModificationActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RelativeLayout layout_protector_info;
@@ -30,6 +33,9 @@ public class ProtectorModificationActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private EditText protector_name;
     private EditText protector_number;
+
+    private FirebaseDatabase database;
+    private User user = User.getInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,15 +52,16 @@ public class ProtectorModificationActivity extends AppCompatActivity {
         protector_modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
                 String name = protector_name.getText().toString();
                 String number = protector_number.getText().toString();
 
-                editor.putString("protector_name", name);
-                editor.putString("protector_number", number);
+                database = FirebaseDatabase.getInstance("https://test-8bbfd-default-rtdb.asia-southeast1.firebasedatabase.app/");
+                DatabaseReference myRef = database.getReference("USER");
 
-                editor.commit();
+                myRef.child(user.getMy_id()).child("INFO").child("Name").setValue(name);
+                user.setProtector_name(name);
+                myRef.child(user.getMy_id()).child("INFO").child("Number").setValue(number);
+                user.setProtector_number(number);
 
                 ProtectorModificationActivity.this.finish();
                 Intent intent = new Intent(getApplicationContext(), ProtectorActivity.class);
@@ -127,11 +134,23 @@ public class ProtectorModificationActivity extends AppCompatActivity {
         protector_title.setTextSize(Dimension.SP, tSize);
 
         //protector_info 이름
-        protector_name.setText(preferences.getString("protector_name","등록된 보호자가 없습니다"));
+        String pName;
+        if(user.getProtector_name() == null){
+            pName = "등록된 보호자가 없습니다";
+        }else{
+            pName = user.getProtector_name();
+        }
+        protector_name.setText(pName);
         protector_name.setTextSize(Dimension.SP, tSize);
 
         //protector_info 번호
-        protector_number.setText(preferences.getString("protector_number","등록된 보호자가 없습니다"));
+        String pNum;
+        if(user.getProtector_number() == null){
+            pNum = "등록된 보호자가 없습니다";
+        }else{
+            pNum = user.getProtector_number();
+        }
+        protector_number.setText(pNum);
         protector_number.setTextSize(Dimension.SP, tSize);
 
         //수정 버튼
