@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 public class ConfirmReceiver extends BroadcastReceiver {
     final String TAG = "ConfirmReceiver";
@@ -26,6 +27,8 @@ public class ConfirmReceiver extends BroadcastReceiver {
         DatabaseReference isReport = database.getReference("USER");
 
         isReport.child(preferences.getString("senior_id","")).child("INFO").child("isReport").setValue("INACTIVATED");
+
+        context.startService(new Intent(context, TimerNotificationService.class).setAction("STOP_ACTION"));
 
 
     }

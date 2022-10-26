@@ -480,21 +480,21 @@ public class MainActivity extends AppCompatActivity {
         record1.setTextSize(Dimension.SP, tSize);
 
 
-        //help 뷰 패딩 설정
-        layout_help = findViewById(R.id.layout_help);
-
-        //help 이미지 뷰
-        ImageView help_image = findViewById(R.id.img_help);
-        RelativeLayout.LayoutParams help_img_pr = (RelativeLayout.LayoutParams) help_image.getLayoutParams();
-        help_image.setImageResource(R.drawable.help_image);
-        help_img_pr.width = metrics.widthPixels / 7;
-        help_img_pr.height = metrics.widthPixels / 7;
-        help_img_pr.setMarginEnd(margin_inside);
-
-        //help 타이틀 텍스트 뷰
-        TextView help_title = findViewById(R.id.txt_help_title);
-        help_title.setText("도움말");
-        help_title.setTextSize(Dimension.SP, tSize);
+//        //help 뷰 패딩 설정
+//        layout_help = findViewById(R.id.layout_help);
+//
+//        //help 이미지 뷰
+//        ImageView help_image = findViewById(R.id.img_help);
+//        RelativeLayout.LayoutParams help_img_pr = (RelativeLayout.LayoutParams) help_image.getLayoutParams();
+//        help_image.setImageResource(R.drawable.help_image);
+//        help_img_pr.width = metrics.widthPixels / 7;
+//        help_img_pr.height = metrics.widthPixels / 7;
+//        help_img_pr.setMarginEnd(margin_inside);
+//
+//        //help 타이틀 텍스트 뷰
+//        TextView help_title = findViewById(R.id.txt_help_title);
+//        help_title.setText("도움말");
+//        help_title.setTextSize(Dimension.SP, tSize);
 
 
     }

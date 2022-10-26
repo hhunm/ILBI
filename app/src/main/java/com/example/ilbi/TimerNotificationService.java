@@ -55,6 +55,13 @@ public class TimerNotificationService extends JobIntentService {
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
         Log.d(TAG,"onStartCommand");
+
+        if(intent.getAction() != null &&
+                intent.getAction().equals("STOP_ACTION")) {
+            stopForeground(true);
+            return START_NOT_STICKY;
+        }
+
         stop = false;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -63,6 +70,7 @@ public class TimerNotificationService extends JobIntentService {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(new NotificationChannel("NOTIFICATION_TIMER", "timer_channel", importance));
         }
+
 
         Intent Mintent = new Intent(this, SplashActivity.class);
         Mintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -264,16 +272,16 @@ public class TimerNotificationService extends JobIntentService {
                             }else{
                             }
 
-                            while(true){
-                                //Log.d(TAG,"waiting");
-                                if(delete){
-                                    Log.d(TAG,"delete");
-                                    stopForeground(true);
-                                    Thread.currentThread().interrupt();
-                                    break;
-                                }
-                            }
-                            stopForeground(true);
+//                            while(true){
+//                                //Log.d(TAG,"waiting");
+//                                if(delete){
+//                                    Log.d(TAG,"delete");
+//                                    stopForeground(true);
+//                                    Thread.currentThread().interrupt();
+//                                    break;
+//                                }
+//                            }
+                            //stopForeground(true);
 
                             Log.d(TAG,"done");
                             break;
@@ -298,7 +306,7 @@ public class TimerNotificationService extends JobIntentService {
 
                     }
                     Log.d(TAG, "while 탈출");
-                    stopForeground(true);
+                    //stopForeground(true);
                     //stopSelf();
                 }catch(Exception e){
 
