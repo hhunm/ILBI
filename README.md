@@ -1,5 +1,4 @@
-# 일비 (Project Name)
-## 紹介
+# プロジェクト名: 일비
 ラズベリーパイにカメラを付けて転倒を感知し、アプリケーションを通じて通報する転倒感知システムです。その中でアプリケーション開発のすべての部分を担当しました。<br>
 <br>
 <img src="https://github.com/user-attachments/assets/7e45e1bf-b183-4721-9d1a-ccba7da19c27" width="800"> <br> <br>
